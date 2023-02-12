@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: news
+  cloud:
+    config:
+      uri: http://localhost:8085
