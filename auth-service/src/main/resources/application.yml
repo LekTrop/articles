@@ -1,7 +1,0 @@
-spring:
-  jpa:
-    generate-ddl: true
-
-role:
-  default: ROLE_USER
-  admin: ROLE_ADMIN

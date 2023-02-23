@@ -1,0 +1,17 @@
+server:
+  port: 8084
+
+spring:
+  jpa:
+    generate-ddl: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:mysql://localhost:3306/u-content
+    password: 3026606117
+    username: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+default:
+  role: ROLE_USER

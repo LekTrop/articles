@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Article</title>
+
+    <link type="text/css" th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/css/footer.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/css/articles.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/css/main.css}" rel="stylesheet">
+</head>
+
+<body>
+<header th:insert="fragments/header-fragment::header"></header>
+
+<div class="wrapper">
+
+    <aside style="float: left">
+
+    </aside>
+
+    <div id="content-container-id" class="content-container">
+        <div th:utext="${article.content}">
+
+        </div>
+    </div>
+
+    <aside style="float: right">
+
+    </aside>
+</div>
+
+<footer th:insert="fragments/footer-fragment::footer"></footer>
+</body>
+</html>

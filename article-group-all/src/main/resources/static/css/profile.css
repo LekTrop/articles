@@ -1,0 +1,26 @@
+.wrapper {
+    display: flex;
+    margin-top: 50px;
+}
+
+.content-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding: 9px;
+
+    margin-left: 2.5%;
+    width: 1180px;
+    height: 105%;
+    min-height: 600px;
+    background-color: white;
+    border-radius: 1%;
+}
+
+aside {
+    background-color: white;
+    width: 15%;
+    height: 500px;
+
+    border-radius: 2%;
+}

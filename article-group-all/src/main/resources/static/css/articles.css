@@ -1,0 +1,158 @@
+.wrapper {
+    display: flex;
+    margin-top: 50px;
+}
+
+.content-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding: 9px;
+
+    margin-left: auto;
+    margin-right: auto;
+    width: 1200px;
+    height: 105%;
+    min-height: 600px;
+    background-color: white;
+    border-radius: 1%;
+}
+
+.pagination-menu{
+    vertical-align : bottom;
+    align-items: center;
+    text-align: center;
+    height: 26px;
+    width: 100%;
+    list-style:none;
+}
+
+.pagination-menu li{
+    display: inline;
+}
+
+.pagination-menu li a{
+    font-size: 20px;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+aside {
+    background-color: white;
+    width: 15%;
+    height: 500px;
+
+    border-radius: 2%;
+}
+
+aside .articles-button {
+    width: 100%;
+    height: 60px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.card {
+    margin: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    width: 300px;
+    height: 500px;
+}
+
+.card-header img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    min-height: 250px;
+    max-height: 300px;
+}
+
+.tag {
+    background: #cccccc;
+    border-radius: 50px;
+    font-size: 12px;
+    margin: 0;
+    color: #fff;
+    padding: 2px 10px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.tag-teal {
+    background-color: #47bcd4;
+}
+
+.tag-purple {
+    background-color: #5e76bf;
+}
+
+.tag-pink {
+    background-color: #cd5b9f;
+}
+
+.card-body p {
+    font-size: 13px;
+    margin: 0 0 40px;
+}
+
+.user {
+    display: flex;
+    margin-top: auto;
+}
+
+.user img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.user-info h5 {
+    margin: 0;
+}
+
+.user-info small {
+    color: #545d7a;
+}
+
+.custom-btn {
+    width: 100%;
+    height: 75px;
+    padding: 10px 25px;
+    border: 2px solid #EEEEEE;;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+}
+
+/* 1 */
+.btn-1 {
+    transition: all 0.3s ease;
+}
+
+.btn-1:hover {
+    box-shadow: -7px -7px 20px 0px #fff9,
+    -4px -4px 5px 0px #fff9,
+    7px 7px 20px 0px #0002,
+    4px 4px 5px 0px #0001;
+}
