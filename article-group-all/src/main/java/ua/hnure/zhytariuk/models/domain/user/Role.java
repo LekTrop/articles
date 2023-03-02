@@ -1,4 +1,4 @@
-package ua.hnure.zhytariuk.models.domain;
+package ua.hnure.zhytariuk.models.domain.user;
 
 import jakarta.persistence.*;
 import lombok.*;

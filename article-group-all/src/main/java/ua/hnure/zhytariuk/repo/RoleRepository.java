@@ -1,7 +1,7 @@
 package ua.hnure.zhytariuk.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ua.hnure.zhytariuk.models.domain.Role;
+import ua.hnure.zhytariuk.models.domain.user.Role;
 
 import java.util.Optional;
 

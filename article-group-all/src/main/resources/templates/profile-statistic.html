@@ -7,6 +7,7 @@
     <link type="text/css" th:href="@{/css/header.css}" rel="stylesheet"/>
     <link type="text/css" th:href="@{/css/footer.css}" rel="stylesheet">
     <link type="text/css" th:href="@{/css/profile.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/css/profile-statistic.css}" rel="stylesheet"/>
     <link type="text/css" th:href="@{/css/main.css}" rel="stylesheet">
 </head>
 <body>
@@ -49,7 +50,29 @@
     </aside>
 
     <div class="content-container">
+        <div class="statistic like-statistic">
+            <h3>Total Likes </h3> <span th:text="${#lists.size(articleLikes)}"></span>
+        </div>
 
+        <div class="statistic">
+            <h3>Total Dislikes </h3> <span th:text="${#lists.size(articleDislikes)}"></span>
+        </div>
+
+        <div class="statistic">
+            <h3>Total Views </h3> <span th:text="${totalViews}"></span>
+        </div>
+
+        <div class="statistic">
+            <h3>Subscribers </h3> <span th:text="${totalSubscribers}"></span>
+        </div>
+
+        <div class="statistic">
+            Articles Sold
+        </div>
+
+        <div class="statistic">
+            Total Comments
+        </div>
     </div>
 </div>
 

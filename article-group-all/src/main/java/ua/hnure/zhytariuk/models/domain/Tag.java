@@ -3,6 +3,7 @@ package ua.hnure.zhytariuk.models.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import ua.hnure.zhytariuk.models.domain.article.Article;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;

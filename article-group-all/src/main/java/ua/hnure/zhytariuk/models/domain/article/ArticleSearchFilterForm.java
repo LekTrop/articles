@@ -1,4 +1,4 @@
-package ua.hnure.zhytariuk.models.domain;
+package ua.hnure.zhytariuk.models.domain.article;
 
 import lombok.*;
 import org.springframework.stereotype.Component;

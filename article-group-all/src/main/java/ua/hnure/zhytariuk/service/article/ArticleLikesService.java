@@ -1,11 +1,14 @@
-package ua.hnure.zhytariuk.service;
+package ua.hnure.zhytariuk.service.article;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ua.hnure.zhytariuk.models.domain.Article;
-import ua.hnure.zhytariuk.models.domain.ArticleLike;
-import ua.hnure.zhytariuk.models.domain.User;
-import ua.hnure.zhytariuk.repo.ArticleLikesRepository;
+import ua.hnure.zhytariuk.models.domain.article.Article;
+import ua.hnure.zhytariuk.models.domain.article.ArticleLike;
+import ua.hnure.zhytariuk.models.domain.user.User;
+import ua.hnure.zhytariuk.repo.article.ArticleLikesRepository;
+import ua.hnure.zhytariuk.service.UserService;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +19,10 @@ public class ArticleLikesService {
 
     public ArticleLike findByUsernameAndArticleId(final String username, final String articleId) {
         return articleLikesRepository.findByUserUsernameAndArticleArticleId(username, articleId);
+    }
+
+    public List<ArticleLike> findAllByUsername(final String username) {
+        return articleLikesRepository.findAllByUserUsername(username);
     }
 
     public void save(final String username, final String articleId) {
@@ -42,5 +49,9 @@ public class ArticleLikesService {
                                                .article(article)
                                                .user(user)
                                                .build());
+    }
+
+    public void deleteById(String articleLikeId) {
+        articleLikesRepository.deleteById(articleLikeId);
     }
 }

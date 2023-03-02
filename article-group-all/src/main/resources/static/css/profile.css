@@ -24,3 +24,13 @@ aside {
 
     border-radius: 2%;
 }
+
+.right-aside{
+    margin-left: auto;
+    order: 2;
+}
+
+.left-aside-button{
+    width: 100%;
+    height: 100px;
+}

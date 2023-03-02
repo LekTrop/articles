@@ -1,8 +1,11 @@
-package ua.hnure.zhytariuk.models.domain;
+package ua.hnure.zhytariuk.models.domain.article;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import ua.hnure.zhytariuk.models.domain.Category;
+import ua.hnure.zhytariuk.models.domain.Tag;
+import ua.hnure.zhytariuk.models.domain.user.User;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -67,6 +70,9 @@ public class Article {
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ArticleLike> articleLikes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ArticleSaved> savedArticles = new ArrayList<>();
+
     public void addTags(final Set<Tag> tags) {
         this.tags = tags;
 
@@ -92,5 +98,12 @@ public class Article {
         this.articleStatistic = articleStatistic;
 
         articleStatistic.setArticle(this);
+    }
+
+    @PrePersist
+    private void prePersist() {
+        if (price == null) {
+            price = new BigDecimal(0);
+        }
     }
 }

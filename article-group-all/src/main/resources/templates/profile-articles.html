@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+
+    <link type="text/css" th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/css/footer.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/css/articles.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/css/profile.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/css/main.css}" rel="stylesheet">
+</head>
+</head>
+<body>
+
+<header th:insert="fragments/header-fragment::header"/>
+
+<div class="wrapper">
+
+    <aside class="left-aside" style="float: left">
+        <a th:href="@{/profile/settings}">
+            <button class="left-aside-button">
+                Settings
+            </button>
+        </a>
+
+        <a th:href="@{/profile/transactions-history}">
+            <button class="left-aside-button">
+                Transaction History
+            </button>
+        </a>
+
+        <a th:href="@{/profile/articles}">
+            <button class="left-aside-button">
+                Articles
+            </button>
+        </a>
+
+        <a th:href="@{/profile/statistic}">
+            <button class="left-aside-button">
+                Statistic
+            </button>
+        </a>
+
+        <a th:href="@{/logout}">
+            <button class="left-aside-button">
+                Log out
+            </button>
+        </a>
+
+    </aside>
+
+    <aside class="right-aside" style="float: right"></aside>
+
+    <div class="content-container">
+        <div class="card" th:each="article: ${articles}">
+            <a th:href="@{/articles/{articleId}(articleId = ${article.getArticleId()})}">
+                <div class="card-header">
+                    <img src="https://www.newsbtc.com/wp-content/uploads/2020/06/mesut-kaya-LcCdl__-kO0-unsplash-scaled.jpg"
+                         alt="ballons"/>
+                </div>
+
+                <div class="card-body">
+                    <span class="tag tag-purple">Popular</span>
+                    <h4 th:text="${article.getTitle()}">
+
+                    </h4>
+                    <p th:text="${article.getDescription()}">
+
+                    </p>
+                    <div class="user">
+                        <img src="https://lh3.googleusercontent.com/ogw/ADGmqu8sn9zF15pW59JIYiLgx3PQ3EyZLFp5Zqao906l=s32-c-mo"
+                             alt="user"/>
+                        <div class="user-info">
+                            <h5 th:text="${article.getUser().getUsername()}"></h5>
+
+                            <small th:text="${article.getCreatedAt()}"></small>
+
+                        </div>
+                    </div>
+                </div>
+                <hr class="bottom-hr"/>
+                <div class="footer-card-menu">
+                    <div class="like">
+                        <a>LIKE</a>
+                    </div>
+
+                    <div class="dislike">
+                        <a>DISLIKE</a>
+                    </div>
+
+                    <div class="save">
+                        <a>SAVE</a>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<footer th:insert="fragments/footer-fragment::footer"/>
+</body>
+</html>

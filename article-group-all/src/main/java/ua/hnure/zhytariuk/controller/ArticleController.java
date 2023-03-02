@@ -9,21 +9,25 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import ua.hnure.zhytariuk.controller.validator.ArticleCreationFormValidator;
 import ua.hnure.zhytariuk.models.api.ArticleApi;
 import ua.hnure.zhytariuk.models.api.SavedArticleApi;
-import ua.hnure.zhytariuk.models.domain.Article;
-import ua.hnure.zhytariuk.models.domain.ArticleCreationForm;
-import ua.hnure.zhytariuk.models.domain.ArticleSearchFilterForm;
+import ua.hnure.zhytariuk.models.domain.article.Article;
+import ua.hnure.zhytariuk.models.domain.article.ArticleCreationForm;
+import ua.hnure.zhytariuk.models.domain.article.ArticleSearchFilterForm;
+import ua.hnure.zhytariuk.models.domain.user.User;
 import ua.hnure.zhytariuk.models.mapper.ArticleMapper;
 import ua.hnure.zhytariuk.models.mapper.SavedArticleMapper;
-import ua.hnure.zhytariuk.service.ArticleService;
 import ua.hnure.zhytariuk.service.CategoryService;
-import ua.hnure.zhytariuk.service.SavedArticleService;
-import ua.hnure.zhytariuk.utils.PaginationUtils;
+import ua.hnure.zhytariuk.service.UserService;
+import ua.hnure.zhytariuk.service.article.ArticleSavedService;
+import ua.hnure.zhytariuk.service.article.ArticleService;
+import ua.hnure.zhytariuk.service.article.ArticleViewService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -45,27 +49,50 @@ public class ArticleController {
     @NonNull
     private final ArticleMapper articleMapper;
     @NonNull
-    private final SavedArticleService savedArticleService;
+    private final ArticleSavedService articleSavedService;
     @NonNull
     private final SavedArticleMapper savedArticleMapper;
+    @NonNull
+    private final ArticleViewService articleViewService;
+    @NonNull
+    private final UserService userService;
 
     @GetMapping({"/articles", "/"})
     public String getArticlesPage(
             final Model model,
-            final ArticleSearchFilterForm form
+            final ArticleSearchFilterForm form,
+            final Authentication authentication
     ) {
         final List<String> categoryNames = categoryService.findAllCategoryNames();
 
+        final String username = Optional.ofNullable(authentication)
+                                        .map(Authentication::getName)
+                                        .orElse(null);
+
+        if (username != null) {
+            final User user = userService.loadUserByUsername(username);
+            final List<String> categoryRecommendations = user.getRecommendations()
+                                                             .stream()
+                                                             .map(recommendation -> recommendation.getCategory()
+                                                                                                  .getName())
+                                                             .toList();
+
+            model.addAttribute("recommendations", categoryRecommendations);
+        }
+
         final Page<Article> articlePage =
-                articleService.findAllWithFilters(form.getCategoryName(),
+                articleService.findAllWithFilters(
+                        null,
+                        form.getCategoryName(),
                         form.getMaxPrice(),
                         form.getMinPrice(),
                         form.getPage(),
                         DEFAULT_ARTICLE_PAGINATION_SIZE
                 );
 
-        model.addAttribute("categoryName", form.getCategoryName());
         model.addAttribute("articles", articlePage.getContent());
+        model.addAttribute("username", username);
+        model.addAttribute("categoryName", form.getCategoryName());
         model.addAttribute("currentPage", articlePage.getNumber());
         model.addAttribute("totalPages", articlePage.getTotalPages());
         model.addAttribute("categoryNames", categoryNames);
@@ -127,8 +154,13 @@ public class ArticleController {
 
     @GetMapping("articles/{articleId}")
     public String getArticlePage(final @PathVariable String articleId,
+                                 final Authentication authentication,
                                  final Model model) {
         final ArticleApi article = articleMapper.toApi(articleService.findById(articleId));
+
+        if (authentication != null) {
+            articleViewService.save(articleId, authentication.getName());
+        }
 
         model.addAttribute("article", article);
 
@@ -136,8 +168,9 @@ public class ArticleController {
     }
 
     @GetMapping("articles/saved")
-    public String getSavedArticlesPage(final Model model) {
-        final List<SavedArticleApi> articleApis = savedArticleService.findByUserId("1")
+    public String getSavedArticlesPage(final Model model,
+                                       final Authentication authentication) {
+        final List<SavedArticleApi> articleApis = articleSavedService.findAllByUserUsername(authentication.getName())
                                                                      .stream()
                                                                      .map(savedArticleMapper::toApi)
                                                                      .collect(Collectors.toList());

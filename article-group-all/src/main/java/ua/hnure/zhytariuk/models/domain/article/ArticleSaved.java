@@ -1,7 +1,8 @@
-package ua.hnure.zhytariuk.models.domain;
+package ua.hnure.zhytariuk.models.domain.article;
 
 import jakarta.persistence.*;
 import lombok.*;
+import ua.hnure.zhytariuk.models.domain.user.User;
 
 @ToString
 @EqualsAndHashCode
@@ -12,15 +13,16 @@ import lombok.*;
 @Builder(toBuilder = true)
 @Entity
 @Table(name = "saved_articles")
-public class SavedArticle {
+public class ArticleSaved {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
     private String id;
 
-    @Column(name = "user_id", nullable = false)
-    private String userId;
+    @ManyToOne
+    @JoinColumn(name = "fk_username", nullable = false)
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "fk_article_id", nullable = false)

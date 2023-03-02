@@ -46,7 +46,8 @@
                 </div>
             </div>
 
-            <button type="submit">Search</button>
+            <button class="button search-button" type="submit">Filter</button>
+            <button class="button" type="reset">Reset</button>
         </form>
     </aside>
 
@@ -63,7 +64,7 @@
                 </div>
 
                 <div class="card-body">
-                    <span class="tag tag-purple">Popular</span>
+                    <span class="tag tag-purple" th:text="${article.getCategory().getName()}">Popular</span>
                     <h4 th:text="${article.getTitle()}">
 
                     </h4>
@@ -74,16 +75,33 @@
                         <img src="https://lh3.googleusercontent.com/ogw/ADGmqu8sn9zF15pW59JIYiLgx3PQ3EyZLFp5Zqao906l=s32-c-mo"
                              alt="user"/>
                         <div class="user-info">
-                            <h5 th:text="${article.getUser().getUsername()}">
+                            <h5 th:text="${article.getUser().getUsername()}"></h5>
 
-                            </h5>
-                            <small th:text="${article.getCreatedAt()}">
+                            <small th:text="${article.getCreatedAt()}"></small>
 
-                            </small>
                         </div>
                     </div>
                 </div>
+
+                <hr class="bottom-hr"/>
             </a>
+            <div class="footer-card-menu" th:if="${username} != null">
+                <div class="like">
+                    <button>LIKE</button>
+                </div>
+
+                <div class="dislike">
+                    <button>DISLIKE</button>
+                </div>
+
+                <div class="save">
+                    <button
+                            th:data-id="${article.getArticleId()}"
+                            onclick="doSave(this.getAttribute('data-id'))">
+                        SAVE
+                    </button>
+                </div>
+            </div>
         </div>
 
         <ul class="pagination-menu">
@@ -120,6 +138,60 @@
             next.disabled = true;
         }
     </script>
+    <script>
+
+        var check_status = false;
+        var like_cnt = $("#like-cnt");
+        var like_parent = $(".like-container");
+
+        var burst = new mojs.Burst({
+            parent: like_parent,
+            radius: {20: 60},
+            count: 15,
+            angle: {0: 30},
+            children: {
+                delay: 250,
+                duration: 700,
+                radius: {10: 0},
+                fill: ['#ddca7e'],
+                easing: mojs.easing.bezier(.08, .69, .39, .97)
+            }
+        });
+
+        $("#like-cnt").click(function () {
+            var t1 = new TimelineLite();
+            var t2 = new TimelineLite();
+            if (!check_status) {
+                t1.set(like_cnt, {scale: 0});
+                t1.set('.like-btn', {scale: 0});
+                t1.to(like_cnt, 0.6, {scale: 1, background: '#ddca7e', ease: Expo.easeOut});
+                t2.to('.like-btn', 0.65, {scale: 1, ease: Elastic.easeOut.config(1, 0.3)}, '+=0.2');
+                check_status = true;
+                burst.replay();
+            } else {
+                t1.to(like_cnt, 1, {scale: 1})
+                    .to(like_cnt, 1, {scale: 1, background: 'rgba(255,255,255,0.3)', ease: Power4.easeOut});
+                t1.timeScale(7);
+                check_status = false;
+            }
+
+        })
+    </script>
+    <script th:inline="javascript">
+        async function doSave(articleId) {
+            const response = await doSaveRequest([[${username}]], articleId);
+        }
+
+        async function doSaveRequest(username, articleId) {
+            const response = await
+                fetch("http://localhost:8084/api/articles/managing/save/" + articleId + "/" + username, {
+                    method: "POST"
+                })
+
+            return response.json();
+        }
+    </script>
+
 </div>
 
 <div th:insert="fragments/footer-fragment::footer"/>

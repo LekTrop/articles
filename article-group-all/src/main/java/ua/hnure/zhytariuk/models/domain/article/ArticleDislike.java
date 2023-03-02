@@ -1,10 +1,11 @@
-package ua.hnure.zhytariuk.models.domain;
+package ua.hnure.zhytariuk.models.domain.article;
+
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
-import org.springframework.data.annotation.CreatedBy;
+import ua.hnure.zhytariuk.models.domain.user.User;
 
 import java.time.LocalDateTime;
 
@@ -16,13 +17,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 @Entity
-@Table(name = "article_likes")
-public class ArticleLike {
+@Table(name = "article_dislikes")
+public class ArticleDislike {
 
     @Id
     @UuidGenerator
-    @Column(name = "article_like_id")
-    private String articleLikeId;
+    @Column(name = "article_dislike_id")
+    private String articleDislikeId;
 
     @ManyToOne
     @JoinColumn(name = "fk_user_id")

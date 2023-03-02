@@ -156,3 +156,25 @@ aside .articles-button {
     7px 7px 20px 0px #0002,
     4px 4px 5px 0px #0001;
 }
+
+.footer-card-menu{
+    display: flex;
+    justify-content: center;
+}
+
+.bottom-hr{
+    width: 280px;
+}
+
+.filter-form{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.search-button{
+    height: 50px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}

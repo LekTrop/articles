@@ -1,4 +1,4 @@
-package ua.hnure.zhytariuk.service;
+package ua.hnure.zhytariuk.service.article;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -7,8 +7,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.util.StringUtils;
-import ua.hnure.zhytariuk.models.domain.*;
-import ua.hnure.zhytariuk.repo.ArticleRepository;
+import ua.hnure.zhytariuk.models.domain.Category;
+import ua.hnure.zhytariuk.models.domain.Tag;
+import ua.hnure.zhytariuk.models.domain.article.Article;
+import ua.hnure.zhytariuk.models.domain.article.ArticleStatistic;
+import ua.hnure.zhytariuk.models.domain.user.User;
+import ua.hnure.zhytariuk.repo.article.ArticleRepository;
+import ua.hnure.zhytariuk.service.CategoryService;
+import ua.hnure.zhytariuk.service.TagService;
+import ua.hnure.zhytariuk.service.UserService;
 import ua.hnure.zhytariuk.service.writer.ArticleWriter;
 import ua.hnure.zhytariuk.utils.PaginationUtils;
 
@@ -18,6 +25,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static ua.hnure.zhytariuk.utils.PaginationUtils.DEFAULT_ARTICLE_PAGINATION_SIZE;
 
 @Service
 @RequiredArgsConstructor
@@ -38,16 +47,18 @@ public class ArticleService {
     private TagService tagService;
 
     @Transactional(readOnly = true)
-    public Page<Article> findAllWithFilters(final String categoryName,
-                                            final BigDecimal maxPrice,
-                                            final BigDecimal minPrice,
-                                            Integer page,
-                                            Integer size) {
+    public Page<Article> findAllWithFilters(
+            final String username,
+            final String categoryName,
+            final BigDecimal maxPrice,
+            final BigDecimal minPrice,
+            Integer page,
+            Integer size) {
 
         page = page == null ? 0 : page;
-        size = size == null ? PaginationUtils.DEFAULT_ARTICLE_PAGINATION_SIZE : size;
+        size = size == null ? DEFAULT_ARTICLE_PAGINATION_SIZE : size;
 
-        return articleRepository.findAllWithFilters(categoryName, maxPrice, minPrice, PageRequest.of(page, size));
+        return articleRepository.findAllWithFilters(username, categoryName, maxPrice, minPrice, PageRequest.of(page, size));
     }
 
     @Transactional

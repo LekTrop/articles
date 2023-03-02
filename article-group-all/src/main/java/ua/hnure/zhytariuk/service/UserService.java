@@ -8,8 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ua.hnure.zhytariuk.models.domain.Role;
-import ua.hnure.zhytariuk.models.domain.User;
+import ua.hnure.zhytariuk.models.domain.user.Role;
+import ua.hnure.zhytariuk.models.domain.user.User;
 import ua.hnure.zhytariuk.repo.UserRepository;
 
 import java.util.Optional;
