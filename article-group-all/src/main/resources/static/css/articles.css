@@ -178,3 +178,33 @@ aside .articles-button {
     bottom: 0;
     width: 100%;
 }
+
+.moderation-container{
+    margin-top: 25px;
+    padding: 16px;
+    outline: none;
+    overflow: hidden;
+    height: 200px;
+    width: 1000px;
+    border: none;
+    background-color: white;
+    border-radius: 1%;
+}
+
+.content-container-moderation{
+    padding: 16px;
+    outline: none;
+    overflow: hidden;
+    min-height: 800px;
+    width: 1000px;
+    border: none;
+    background-color: white;
+    border-radius: 1%;
+}
+
+.wrapper-moderation {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 50px;
+}

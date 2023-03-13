@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "user_subscribers")
 @Builder(toBuilder = true)
-public class UserSubscriber {
+public class Subscriber {
 
     @Id
     @UuidGenerator

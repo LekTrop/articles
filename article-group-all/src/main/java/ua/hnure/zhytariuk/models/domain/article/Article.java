@@ -14,6 +14,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static ua.hnure.zhytariuk.models.domain.article.ArticleStatus.ON_MODERATION;
+
 @ToString
 @EqualsAndHashCode
 @Getter
@@ -41,12 +43,13 @@ public class Article {
     @Column(name = "content", nullable = false, length = 5000)
     private String content;
 
-    @Column(name = "price")
-    private BigDecimal price;
-
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private ArticleStatus status;
 
     @CreationTimestamp
     @Column(name = "updated_at")
@@ -64,8 +67,6 @@ public class Article {
     @JoinColumn(name = "fk_category_id", nullable = false)
     private Category category;
 
-    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "article")
-    private ArticleStatistic articleStatistic;
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ArticleLike> articleLikes = new ArrayList<>();
@@ -94,16 +95,9 @@ public class Article {
             .add(this);
     }
 
-    public void addStatistic(final ArticleStatistic articleStatistic) {
-        this.articleStatistic = articleStatistic;
-
-        articleStatistic.setArticle(this);
-    }
-
     @PrePersist
     private void prePersist() {
-        if (price == null) {
-            price = new BigDecimal(0);
-        }
+
+        this.status = ON_MODERATION;
     }
 }

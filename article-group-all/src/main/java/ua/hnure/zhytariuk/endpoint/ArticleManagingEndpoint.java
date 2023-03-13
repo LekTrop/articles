@@ -21,8 +21,8 @@ public class ArticleManagingEndpoint {
     @NonNull
     final ArticleSavedService articleSavedService;
 
-    @PostMapping("/like")
-    public ResponseEntity<?> doLike(final String articleId, final String username) {
+    @PostMapping("/like/{articleId}/{username}")
+    public ResponseEntity<?> doLike(final @PathVariable String articleId, final @PathVariable String username) {
         articleLikesService.save(username, articleId);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }

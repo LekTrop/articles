@@ -10,14 +10,15 @@ import org.thymeleaf.util.StringUtils;
 import ua.hnure.zhytariuk.models.domain.Category;
 import ua.hnure.zhytariuk.models.domain.Tag;
 import ua.hnure.zhytariuk.models.domain.article.Article;
-import ua.hnure.zhytariuk.models.domain.article.ArticleStatistic;
+import ua.hnure.zhytariuk.models.domain.article.ArticleModeration;
+import ua.hnure.zhytariuk.models.domain.article.ArticleStatus;
 import ua.hnure.zhytariuk.models.domain.user.User;
+import ua.hnure.zhytariuk.repo.ArticleModerationRepository;
 import ua.hnure.zhytariuk.repo.article.ArticleRepository;
 import ua.hnure.zhytariuk.service.CategoryService;
 import ua.hnure.zhytariuk.service.TagService;
 import ua.hnure.zhytariuk.service.UserService;
 import ua.hnure.zhytariuk.service.writer.ArticleWriter;
-import ua.hnure.zhytariuk.utils.PaginationUtils;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -45,6 +46,8 @@ public class ArticleService {
     private CategoryService categoryService;
     @NonNull
     private TagService tagService;
+    @NonNull
+    private ArticleModerationRepository articleModerationRepository;
 
     @Transactional(readOnly = true)
     public Page<Article> findAllWithFilters(
@@ -53,12 +56,23 @@ public class ArticleService {
             final BigDecimal maxPrice,
             final BigDecimal minPrice,
             Integer page,
-            Integer size) {
+            Integer size,
+            final ArticleStatus status) {
 
         page = page == null ? 0 : page;
         size = size == null ? DEFAULT_ARTICLE_PAGINATION_SIZE : size;
 
-        return articleRepository.findAllWithFilters(username, categoryName, maxPrice, minPrice, PageRequest.of(page, size));
+        return articleRepository.findAllWithFilters(username,
+                categoryName,
+                maxPrice,
+                minPrice,
+                status,
+                PageRequest.of(page, size));
+    }
+
+    @Transactional
+    public Article save(final Article article){
+        return articleRepository.save(article);
     }
 
     @Transactional
@@ -86,13 +100,12 @@ public class ArticleService {
             article.addTags(mergeExistedAndNotExistedTags(existedTags, notExistedTags));
         }
 
-        final ArticleStatistic articleStatistic = new ArticleStatistic();
-
-        article.addStatistic(articleStatistic);
-
         final Article createdArticle = articleRepository.save(article);
 
-        articleWriter.createNewFolder(ARTICLE_PATH, createdArticle.getArticleId());
+        articleModerationRepository.save(ArticleModeration.builder()
+                                                          .article(article)
+                                                          .build());
+//        articleWriter.createNewFolder(ARTICLE_PATH, createdArticle.getArticleId());
 
         return createdArticle;
     }

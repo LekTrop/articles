@@ -19,6 +19,7 @@ import ua.hnure.zhytariuk.models.api.SavedArticleApi;
 import ua.hnure.zhytariuk.models.domain.article.Article;
 import ua.hnure.zhytariuk.models.domain.article.ArticleCreationForm;
 import ua.hnure.zhytariuk.models.domain.article.ArticleSearchFilterForm;
+import ua.hnure.zhytariuk.models.domain.article.ArticleStatus;
 import ua.hnure.zhytariuk.models.domain.user.User;
 import ua.hnure.zhytariuk.models.mapper.ArticleMapper;
 import ua.hnure.zhytariuk.models.mapper.SavedArticleMapper;
@@ -65,19 +66,15 @@ public class ArticleController {
     ) {
         final List<String> categoryNames = categoryService.findAllCategoryNames();
 
-        final String username = Optional.ofNullable(authentication)
-                                        .map(Authentication::getName)
-                                        .orElse(null);
+//        final String username = Optional.ofNullable(authentication)
+//                                        .map(Authentication::getName)
+//                                        .orElse(null);
 
-        if (username != null) {
+
+        String username = "admin";
+
+        if(username != null) {
             final User user = userService.loadUserByUsername(username);
-            final List<String> categoryRecommendations = user.getRecommendations()
-                                                             .stream()
-                                                             .map(recommendation -> recommendation.getCategory()
-                                                                                                  .getName())
-                                                             .toList();
-
-            model.addAttribute("recommendations", categoryRecommendations);
         }
 
         final Page<Article> articlePage =
@@ -87,7 +84,8 @@ public class ArticleController {
                         form.getMaxPrice(),
                         form.getMinPrice(),
                         form.getPage(),
-                        DEFAULT_ARTICLE_PAGINATION_SIZE
+                        DEFAULT_ARTICLE_PAGINATION_SIZE,
+                        ArticleStatus.PUBLISHED
                 );
 
         model.addAttribute("articles", articlePage.getContent());
@@ -105,9 +103,11 @@ public class ArticleController {
             final Authentication authentication,
             final Model model) {
 
-        final String username = Optional.ofNullable(authentication)
-                                        .map(Authentication::getName)
-                                        .orElse(null);
+        final String username = "admin";
+
+//                Optional.ofNullable(authentication)
+//                                        .map(Authentication::getName)
+//                                        .orElse(null);
 
         if (username == null || Objects.equals("anonymousUser", username)) {
             return "redirect:/login";

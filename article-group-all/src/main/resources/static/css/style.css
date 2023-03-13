@@ -9,7 +9,7 @@
     margin-left: 25%;
     margin-right: 25%;
     height: 100%;
-    width: 50%;
+    width: 1000px;
 }
 
 .col {
@@ -187,9 +187,9 @@ textarea {
 #content {
     padding: 16px;
     outline: none;
-    overflow: auto;
-    height: 800px;
-    width: 100%;
+    overflow: hidden;
+    min-height: 800px;
+    width: 1000px;
     border: none;
 }
 #show-code[data-active="true"] {

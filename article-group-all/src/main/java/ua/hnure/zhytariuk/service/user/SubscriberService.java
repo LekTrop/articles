@@ -4,7 +4,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ua.hnure.zhytariuk.models.domain.user.User;
-import ua.hnure.zhytariuk.models.domain.user.UserSubscriber;
+import ua.hnure.zhytariuk.models.domain.user.Subscriber;
 import ua.hnure.zhytariuk.repo.user.UserSubscriberRepository;
 import ua.hnure.zhytariuk.service.UserService;
 
@@ -30,14 +30,14 @@ public class SubscriberService {
             throw new RuntimeException();
         }
 
-        final UserSubscriber userSubscriber =
+        final Subscriber userSubscriber =
                 userSubscribersRepository.findBySubscriberUsernameAndUserUsername(subscriberUsername, authorUsername);
 
         if (userSubscriber == null) {
-            userSubscribersRepository.save(UserSubscriber.builder()
-                                                         .subscriber(subscriber)
-                                                         .user(user)
-                                                         .build());
+            userSubscribersRepository.save(Subscriber.builder()
+                                                     .subscriber(subscriber)
+                                                     .user(user)
+                                                     .build());
             return true;
         } else {
             userSubscribersRepository.deleteById(userSubscriber.getUserSubscriberId());

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><!DOCTYPE html>
+        <html lang="en" xmlns:th="http://www.thymeleaf.org">
+        <head>
+        <meta charset="UTF-8">
+        <title>Article</title>
+
+    <link type="text/css" th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/css/footer.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/css/articles.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/css/main.css}" rel="stylesheet">
+</head>
+
+<body>
+<header th:insert="fragments/header-fragment::header"></header>
+<aside style="float: left">
+
+</aside>
+
+<aside style="float: right">
+
+</aside>
+
+<div class="wrapper-moderation">
+
+    <div id="content-container-id" class="content-container-moderation" contenteditable="true" spellcheck="false"
+         th:utext="${article.content}">
+
+    </div>
+
+    <div class="moderation-container">
+        <form method="post"
+              th:object="${articleModeration}"
+              th:action="@{/admin-panel/moderation/{articleId}(articleId = ${article.getArticleId()})}">
+            <select th:field="${articleModeration.status}">
+                <option th:each="status : ${T(ua.hnure.zhytariuk.models.domain.article.ModerationStatus).values()}"
+                        th:value="${status}" th:text="${status}"></option>
+            </select>
+            <input th:field="${articleModeration.additionalInformation}"/>
+            <button type="submit"></button>
+        </form>
+    </div>
+
+</div>
+
+<footer th:insert="fragments/footer-fragment::footer"></footer>
+</body>
+</html>

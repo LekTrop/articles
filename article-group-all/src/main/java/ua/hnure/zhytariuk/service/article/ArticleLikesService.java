@@ -2,6 +2,7 @@ package ua.hnure.zhytariuk.service.article;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ua.hnure.zhytariuk.models.domain.article.Article;
 import ua.hnure.zhytariuk.models.domain.article.ArticleLike;
 import ua.hnure.zhytariuk.models.domain.user.User;
@@ -21,10 +22,12 @@ public class ArticleLikesService {
         return articleLikesRepository.findByUserUsernameAndArticleArticleId(username, articleId);
     }
 
-    public List<ArticleLike> findAllByUsername(final String username) {
-        return articleLikesRepository.findAllByUserUsername(username);
+    public List<ArticleLike> findAllArticleLikesByUsernameAuthor(final String username,
+                                                                 final Integer month) {
+        return articleLikesRepository.findAllArticleLikesByUsernameAuthorAndMonth(username, month);
     }
 
+    @Transactional
     public void save(final String username, final String articleId) {
 
         final Article article = articleService.findById(articleId);
@@ -42,13 +45,14 @@ public class ArticleLikesService {
         final ArticleLike articleLike = findByUsernameAndArticleId(username, articleId);
 
         if (articleLike != null) {
-            throw new RuntimeException("Cannot like because like is already done");
-        }
+            articleLikesRepository.delete(articleLike);
+        } else {
 
-        articleLikesRepository.save(ArticleLike.builder()
-                                               .article(article)
-                                               .user(user)
-                                               .build());
+            articleLikesRepository.save(ArticleLike.builder()
+                                                   .article(article)
+                                                   .user(user)
+                                                   .build());
+        }
     }
 
     public void deleteById(String articleLikeId) {

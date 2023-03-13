@@ -81,17 +81,7 @@
                 </div>
                 <hr class="bottom-hr"/>
                 <div class="footer-card-menu">
-                    <div class="like">
-                        <a>LIKE</a>
-                    </div>
-
-                    <div class="dislike">
-                        <a>DISLIKE</a>
-                    </div>
-
-                    <div class="save">
-                        <a>SAVE</a>
-                    </div>
+                    <a th:text="${article.getStatus()}"></a>
                 </div>
             </a>
         </div>

@@ -16,4 +16,5 @@ public class ArticleSearchFilterForm {
     private BigDecimal maxPrice;
     private BigDecimal minPrice;
     private Integer page;
+    private Integer paginationSize;
 }

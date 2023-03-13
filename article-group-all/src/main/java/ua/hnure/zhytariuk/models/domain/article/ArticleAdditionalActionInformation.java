@@ -1,4 +1,4 @@
-package ua.hnure.zhytariuk.controller;
+package ua.hnure.zhytariuk.models.domain.article;
 
 import lombok.Builder;
 import lombok.Getter;
