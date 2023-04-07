@@ -41,14 +41,6 @@
 
     <div class="row centered">
         <div class="col">
-            <label class="input-label">
-                <input th:field="${creationForm.price}"type="number" step="any"/> $
-            </label>
-        </div>
-    </div>
-
-    <div class="row centered">
-        <div class="col">
             <select th:field="${creationForm.categoryName}">
                 <option selected value="null">Select Category</option>
                 <option th:each="name: ${categoryNames}" th:text="${name}" th:value="${name}"></option>

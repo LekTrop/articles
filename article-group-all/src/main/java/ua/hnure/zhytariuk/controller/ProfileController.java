@@ -73,6 +73,7 @@ public class ProfileController {
                                       null,
                                       null,
                                       null,
+                                      null,
                                       null)
                               .getContent();
 
@@ -103,12 +104,12 @@ public class ProfileController {
                                                                                               .getDayOfMonth(),
                                                            Collectors.counting()));
 
-        final long [] data = new long [dateStatisticApi.getMonthDays().length];
+        final long[] data = new long[dateStatisticApi.getMonthDays().length];
 
-        for(int i = 0; i < dateStatisticApi.getMonthDays().length; i++){
-            if(map.containsKey(i + 1)){
+        for (int i = 0; i < dateStatisticApi.getMonthDays().length; i++) {
+            if (map.containsKey(i + 1)) {
                 data[i] = map.get(i + 1);
-            }else{
+            } else {
                 data[i] = 0;
             }
         }

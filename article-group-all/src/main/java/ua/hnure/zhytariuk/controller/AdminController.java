@@ -17,9 +17,7 @@ import ua.hnure.zhytariuk.service.CategoryService;
 import ua.hnure.zhytariuk.service.UserService;
 import ua.hnure.zhytariuk.service.article.ArticleService;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -43,10 +41,11 @@ public class AdminController {
         final List<String> categoryNames = categoryService.findAllCategoryNames();
 
         final Page<Article> articlePage = articleService.findAllWithFilters(
-                null,
+                form.getUsername(),
                 form.getCategoryName(),
-                form.getMaxPrice(),
-                form.getMinPrice(),
+                form.getTitle(),
+                form.getStartDate(),
+                form.getEndDate(),
                 form.getPage(),
                 form.getPaginationSize(),
                 ArticleStatus.ON_MODERATION
@@ -96,7 +95,7 @@ public class AdminController {
                                                             .article(article.toBuilder()
                                                                             .status(ArticleStatus.PUBLISHED)
                                                                             .user(user)
-                                                                             .build())
+                                                                            .build())
                                                             .build());
                 } else if (newModeration.getStatus() == ModerationStatus.CANCELED) {
                     articleModerationRepository.save(existed.toBuilder()

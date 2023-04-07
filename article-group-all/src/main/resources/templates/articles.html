@@ -20,7 +20,9 @@
         <form class="filter-form" th:action="@{/articles}">
             <button type="submit" disabled style="display: none"></button>
 
-            <select th:name="categoryName" class="filter-category">
+            <input type="text" class="title-input left-aside-button" placeholder="Title"/>
+
+            <select th:name="categoryName" style="width: 100%" class="filter-category left-aside-button">
                 <option selected th:value="${null}">Category</option>
                 <option th:each="name : ${categoryNames}"
                         th:value="${name}"
@@ -30,30 +32,20 @@
                 </option>
             </select>
 
-            <div class="saved-articles">
+            <input type="text" class="username-input left-aside-button" placeholder="Username"/>
+
+            <input type="date" class="startDate-input left-aside-button" placeholder="StartDate"/>
+            <input type="date" class="endDate-input left-aside-button" placeholder="EndDate"/>
+
+            <div class="left-aside-button">
                 <a th:href="@{/articles/saved}" class="articles-aside">
                     <button class="custom-btn btn-1">Saved Articles</button>
                 </a>
             </div>
 
-            <div class="price-block">
-                <div class="min-price">
-                    <input type="number" th:name="minPrice" placeholder="Min Price">
-                </div>
-
-                <div class="max-price">
-                    <input type="number" th:name="maxPrice" placeholder="Max Price">
-                </div>
-            </div>
-
             <button class="button search-button" type="submit">Filter</button>
-            <button class="button" type="reset">Reset</button>
         </form>
     </aside>
-
-    <div class="filter-container">
-
-    </div>
 
     <div class="content-container">
         <div class="card" th:each="article: ${articles}">
@@ -124,7 +116,55 @@
     </div>
 
     <aside style="float: right">
+        <div class="rating-card">
+            <a th:href="@{/articles/{articleId}(articleId = ${article.getArticleId()})}">
+                <div class="card-header">
+                    <img src="https://www.newsbtc.com/wp-content/uploads/2020/06/mesut-kaya-LcCdl__-kO0-unsplash-scaled.jpg"
+                         alt="ballons"/>
+                </div>
 
+                <div class="card-body">
+                    <span class="tag tag-purple" th:text="${article.getCategory().getName()}">Popular</span>
+                    <h4 th:text="${article.getTitle()}">
+
+                    </h4>
+                    <p th:text="${article.getDescription()}">
+
+                    </p>
+                    <div class="user">
+                        <img src="https://lh3.googleusercontent.com/ogw/ADGmqu8sn9zF15pW59JIYiLgx3PQ3EyZLFp5Zqao906l=s32-c-mo"
+                             alt="user"/>
+                        <div class="user-info">
+                            <h5 th:text="${article.getUser().getUsername()}"></h5>
+
+                            <small th:text="${article.getCreatedAt()}"></small>
+
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="bottom-hr"/>
+            </a>
+            <div class="footer-card-menu" th:if="${username} != null">
+                <button
+                        th:data-id="${article.getArticleId()}"
+                        onclick="doLike(this.getAttribute('data-id'))">
+                    Like
+                </button>
+
+                <div class="dislike">
+                    <button>DISLIKE</button>
+                </div>
+
+                <div class="save">
+                    <button
+                            th:data-id="${article.getArticleId()}"
+                            onclick="doSave(this.getAttribute('data-id'))">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+        </div>
     </aside>
 
     <script th:inline="javascript">

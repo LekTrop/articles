@@ -20,7 +20,7 @@ import ua.hnure.zhytariuk.service.TagService;
 import ua.hnure.zhytariuk.service.UserService;
 import ua.hnure.zhytariuk.service.writer.ArticleWriter;
 
-import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
@@ -53,8 +53,9 @@ public class ArticleService {
     public Page<Article> findAllWithFilters(
             final String username,
             final String categoryName,
-            final BigDecimal maxPrice,
-            final BigDecimal minPrice,
+            final String title,
+            final LocalDate startDate,
+            final LocalDate endDate,
             Integer page,
             Integer size,
             final ArticleStatus status) {
@@ -62,16 +63,18 @@ public class ArticleService {
         page = page == null ? 0 : page;
         size = size == null ? DEFAULT_ARTICLE_PAGINATION_SIZE : size;
 
-        return articleRepository.findAllWithFilters(username,
+        return articleRepository.findAllWithFilters(
+                username,
                 categoryName,
-                maxPrice,
-                minPrice,
+                title,
+                startDate,
+                endDate,
                 status,
                 PageRequest.of(page, size));
     }
 
     @Transactional
-    public Article save(final Article article){
+    public Article save(final Article article) {
         return articleRepository.save(article);
     }
 

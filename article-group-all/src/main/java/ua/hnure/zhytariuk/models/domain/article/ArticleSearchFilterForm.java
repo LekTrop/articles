@@ -3,7 +3,7 @@ package ua.hnure.zhytariuk.models.domain.article;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Component
 @Getter
@@ -13,8 +13,10 @@ import java.math.BigDecimal;
 @Builder(toBuilder = true)
 public class ArticleSearchFilterForm {
     private String categoryName;
-    private BigDecimal maxPrice;
-    private BigDecimal minPrice;
+    private String username;
+    private String title;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private Integer page;
     private Integer paginationSize;
 }

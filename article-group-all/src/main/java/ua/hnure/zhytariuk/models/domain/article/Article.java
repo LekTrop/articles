@@ -84,15 +84,19 @@ public class Article {
     public void addCategory(final Category category) {
         this.category = category;
 
-        category.getArticles()
-                .add(this);
+        if(category != null) {
+            category.getArticles()
+                    .add(this);
+        }
     }
 
     public void addUser(final User user) {
         this.user = user;
 
-        user.getArticles()
-            .add(this);
+        if(user != null) {
+            user.getArticles()
+                .add(this);
+        }
     }
 
     @PrePersist

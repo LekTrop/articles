@@ -29,9 +29,7 @@ import ua.hnure.zhytariuk.service.article.ArticleSavedService;
 import ua.hnure.zhytariuk.service.article.ArticleService;
 import ua.hnure.zhytariuk.service.article.ArticleViewService;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static ua.hnure.zhytariuk.utils.PaginationUtils.DEFAULT_ARTICLE_PAGINATION_SIZE;
@@ -66,34 +64,24 @@ public class ArticleController {
     ) {
         final List<String> categoryNames = categoryService.findAllCategoryNames();
 
-//        final String username = Optional.ofNullable(authentication)
-//                                        .map(Authentication::getName)
-//                                        .orElse(null);
-
-
-        String username = "admin";
-
-        if(username != null) {
-            final User user = userService.loadUserByUsername(username);
-        }
-
         final Page<Article> articlePage =
                 articleService.findAllWithFilters(
-                        null,
+                        form.getUsername(),
                         form.getCategoryName(),
-                        form.getMaxPrice(),
-                        form.getMinPrice(),
+                        form.getTitle(),
+                        form.getStartDate(),
+                        form.getEndDate(),
                         form.getPage(),
                         DEFAULT_ARTICLE_PAGINATION_SIZE,
                         ArticleStatus.PUBLISHED
                 );
 
-        model.addAttribute("articles", articlePage.getContent());
-        model.addAttribute("username", username);
+        model.addAttribute("articles", articlePage.getContent());;
         model.addAttribute("categoryName", form.getCategoryName());
         model.addAttribute("currentPage", articlePage.getNumber());
         model.addAttribute("totalPages", articlePage.getTotalPages());
         model.addAttribute("categoryNames", categoryNames);
+        model.addAttribute("article", articlePage.getContent().get(0));
 
         return "articles";
     }
@@ -174,6 +162,8 @@ public class ArticleController {
                                                                      .stream()
                                                                      .map(savedArticleMapper::toApi)
                                                                      .collect(Collectors.toList());
+
+        new ArrayList<Article>().stream().sorted(Comparator.comparing(Article::getArticleId).reversed()).toList();
 
         model.addAttribute("savedArticles", articleApis);
 

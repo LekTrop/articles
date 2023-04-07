@@ -8,6 +8,7 @@ class ArticleGroupAllApplicationTests {
 
     @Test
     void contextLoads() {
+
     }
 
 }

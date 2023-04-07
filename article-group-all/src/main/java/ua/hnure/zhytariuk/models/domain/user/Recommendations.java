@@ -12,7 +12,7 @@ import ua.hnure.zhytariuk.models.domain.Category;
 @Getter
 @Setter
 @Entity
-@Table(name = "users")
+@Table(name = "recommendations")
 @Builder(toBuilder = true)
 public class Recommendations {
 
