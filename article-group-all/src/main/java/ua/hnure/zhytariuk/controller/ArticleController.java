@@ -77,11 +77,11 @@ public class ArticleController {
                 );
 
         model.addAttribute("articles", articlePage.getContent());;
-        model.addAttribute("categoryName", form.getCategoryName());
+        model.addAttribute("searchForm", form);
         model.addAttribute("currentPage", articlePage.getNumber());
         model.addAttribute("totalPages", articlePage.getTotalPages());
         model.addAttribute("categoryNames", categoryNames);
-        model.addAttribute("article", articlePage.getContent().get(0));
+//        model.addAttribute("article", articlePage.getContent().get(0));
 
         return "articles";
     }
@@ -157,14 +157,14 @@ public class ArticleController {
 
     @GetMapping("articles/saved")
     public String getSavedArticlesPage(final Model model,
+                                       final ArticleSearchFilterForm searchFilterForm,
                                        final Authentication authentication) {
         final List<SavedArticleApi> articleApis = articleSavedService.findAllByUserUsername(authentication.getName())
                                                                      .stream()
                                                                      .map(savedArticleMapper::toApi)
                                                                      .collect(Collectors.toList());
 
-        new ArrayList<Article>().stream().sorted(Comparator.comparing(Article::getArticleId).reversed()).toList();
-
+        model.addAttribute("searchForm", searchFilterForm);
         model.addAttribute("savedArticles", articleApis);
 
         return "saved-articles";

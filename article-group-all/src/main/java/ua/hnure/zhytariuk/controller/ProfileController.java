@@ -12,19 +12,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
 import ua.hnure.zhytariuk.models.domain.article.Article;
-import ua.hnure.zhytariuk.models.domain.article.ArticleDislike;
-import ua.hnure.zhytariuk.models.domain.article.ArticleLike;
-import ua.hnure.zhytariuk.service.article.ArticleDislikeService;
-import ua.hnure.zhytariuk.service.article.ArticleLikesService;
+import ua.hnure.zhytariuk.models.domain.article.ArticleSearchFilterForm;
+import ua.hnure.zhytariuk.models.domain.user.User;
+import ua.hnure.zhytariuk.service.StatisticService;
+import ua.hnure.zhytariuk.service.UserService;
 import ua.hnure.zhytariuk.service.article.ArticleService;
-import ua.hnure.zhytariuk.service.article.ArticleViewService;
-import ua.hnure.zhytariuk.service.user.SubscriberService;
 import ua.hnure.zhytariuk.utils.DateStatisticApi;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import static java.lang.Integer.parseInt;
 import static ua.hnure.zhytariuk.utils.StatisticUtils.getMonthDays;
@@ -35,15 +33,11 @@ import static ua.hnure.zhytariuk.utils.StatisticUtils.getMonthDays;
 public class ProfileController {
 
     @NonNull
+    private final StatisticService statisticService;
+    @NonNull
     private final ArticleService articleService;
     @NonNull
-    private final ArticleLikesService articleLikesService;
-    @NonNull
-    private final ArticleDislikeService articleDislikeService;
-    @NonNull
-    private final ArticleViewService articleViewService;
-    @NonNull
-    private final SubscriberService subscriberService;
+    private final UserService userService;
 
     @GetMapping
     public String getProfilePage(final Authentication authentication) {
@@ -61,23 +55,39 @@ public class ProfileController {
         return "author-profile";
     }
 
+    @GetMapping("articles/settings")
+    public String getProfileSettingsPage(final Authentication authentication,
+                                         final Model model) {
+        final String username = Optional.ofNullable(authentication)
+                                        .map(Principal::getName)
+                                        .orElse(null);
+
+        final User user = userService.loadUserByUsername(username);
+
+        model.addAttribute("user", user);
+
+        return "profile-settings";
+    }
+
     @GetMapping("articles")
     public String getProfileArticlesPage(final Authentication authentication,
+                                         final ArticleSearchFilterForm form,
                                          final Model model) {
 
         final List<Article> articles =
                 articleService.findAllWithFilters(
-                                      "admin",
-                                      null,
-                                      null,
-                                      null,
-                                      null,
-                                      null,
-                                      null,
+                                      authentication.getName(),
+                                      form.getCategoryName(),
+                                      form.getTitle(),
+                                      form.getStartDate(),
+                                      form.getEndDate(),
+                                      form.getPage(),
+                                      form.getPaginationSize(),
                                       null)
                               .getContent();
 
         model.addAttribute("articles", articles);
+        model.addAttribute("searchForm", form);
 
         return "profile-articles";
     }
@@ -96,35 +106,13 @@ public class ProfileController {
         final DateStatisticApi dateStatisticApi = getDateStatistic(date);
 
         final String username = "admin";
-        final List<ArticleLike> articleLikes = articleLikesService.findAllArticleLikesByUsernameAuthor(username, dateStatisticApi.getMonth());
-        final List<ArticleDislike> articleDislikes = articleDislikeService.findAllByUsername(username);
 
-        final Map<Integer, Long> map = articleLikes.stream()
-                                                   .collect(Collectors.groupingBy(like -> like.getCreatedAt()
-                                                                                              .getDayOfMonth(),
-                                                           Collectors.counting()));
-
-        final long[] data = new long[dateStatisticApi.getMonthDays().length];
-
-        for (int i = 0; i < dateStatisticApi.getMonthDays().length; i++) {
-            if (map.containsKey(i + 1)) {
-                data[i] = map.get(i + 1);
-            } else {
-                data[i] = 0;
-            }
-        }
-
-        final long totalViews = articleViewService.findTotalViewsByUsername(username);
-        final long totalSubscribers = subscriberService.subscribersCountByUsername(username);
+        final long[] data = statisticService.getStatisticByDiagram(username, diagramName, dateStatisticApi);
 
         model.addAttribute("date", date);
         model.addAttribute("dateStatistic", dateStatisticApi);
         model.addAttribute("diagramName", diagramName);
-        model.addAttribute("data", data);
-        model.addAttribute("totalSubscribers", totalSubscribers);
-        model.addAttribute("articleLikes", articleLikes);
-        model.addAttribute("articleDislikes", articleDislikes);
-        model.addAttribute("totalViews", totalViews);
+        model.addAttribute("statisticData", data);
 
         return "profile-statistic";
     }

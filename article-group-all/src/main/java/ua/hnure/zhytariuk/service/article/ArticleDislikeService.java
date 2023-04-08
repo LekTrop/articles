@@ -24,8 +24,8 @@ public class ArticleDislikeService {
         return articleDislikeRepository.findByUserUsernameAndArticleArticleId(username, articleId);
     }
 
-    public List<ArticleDislike> findAllByUsername(final String username) {
-        return articleDislikeRepository.findAllByUserUsername(username);
+    public List<ArticleDislike> findAllArticleDislikesByUsernameAuthor(final String username, final Integer month, final Integer year) {
+        return articleDislikeRepository.findAllUserArticlesDislikesByYearAndMonth(username, year, month);
     }
 
     @Transactional

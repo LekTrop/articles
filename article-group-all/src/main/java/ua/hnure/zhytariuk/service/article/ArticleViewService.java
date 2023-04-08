@@ -2,11 +2,13 @@ package ua.hnure.zhytariuk.service.article;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ua.hnure.zhytariuk.models.domain.user.User;
 import ua.hnure.zhytariuk.models.domain.article.Article;
 import ua.hnure.zhytariuk.models.domain.article.ArticleView;
+import ua.hnure.zhytariuk.models.domain.user.User;
 import ua.hnure.zhytariuk.repo.article.ArticleViewRepository;
 import ua.hnure.zhytariuk.service.UserService;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -40,5 +42,15 @@ public class ArticleViewService {
 
     public long findTotalViewsByUsername(final String name) {
         return articleViewRepository.countByUserUsername(name);
+    }
+
+    public List<ArticleView> findAllByUserUsername(final String username) {
+        return articleViewRepository.findAllByArticleUserUsername(username);
+    }
+
+    public List<ArticleView> findAllArticleLikesByUsernameAuthorAndMonthAndYear(final String username,
+                                                                                final Integer month,
+                                                                                final Integer year) {
+        return articleViewRepository.findAllArticleLikesByUsernameAuthorAndMonthAndYear(username, month, year);
     }
 }

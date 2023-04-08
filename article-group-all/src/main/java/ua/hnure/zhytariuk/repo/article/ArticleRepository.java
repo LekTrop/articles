@@ -18,9 +18,9 @@ public interface ArticleRepository extends JpaRepository<Article, String> {
             "FROM Article a " +
                     "         INNER JOIN a.category c " +
                     "         INNER JOIN a.user u " +
-                    "WHERE (:username IS NULL OR :username = u.username) " +
+                    "WHERE (:username IS NULL OR :username LIKE '' OR :username = u.username) " +
                     "AND (:categoryName IS NULL OR :categoryName LIKE '' OR c.name = :categoryName) " +
-                    "AND (:title IS NULL OR a.title LIKE %:title%) " +
+                    "AND (:title IS NULL OR :title LIKE '' OR a.title LIKE %:title%) " +
                     "AND (:startDate IS NULL OR a.createdAt > :startDate) " +
                     "AND (:endDate IS NULL OR a.createdAt < :endDate) " +
                     "AND (:status IS NULL OR a.status = :status)"

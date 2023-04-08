@@ -6,6 +6,11 @@
 
 <body>
 <header class="header-menu" th:fragment="header">
+
+    <div class="logo">
+
+    </div>
+
     <div class="header-ul">
         <ul>
             <li><a th:href="@{/articles}">Articles</a></li>
@@ -15,9 +20,11 @@
         </ul>
     </div>
 
-    <a sec:authorize="isAuthenticated()" th:href="@{/profile}" class="profile-menu">
+    <div sec:authorize="isAuthenticated()" class="profile-menu">
+        <a th:href="@{/profile}" class="profile-icon">
 
-    </a>
+        </a>
+    </div>
 </header>
 </body>
 </html>

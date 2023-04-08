@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -20,10 +20,10 @@
         <form class="filter-form" th:action="@{/articles}">
             <button type="submit" disabled style="display: none"></button>
 
-            <input type="text" class="title-input left-aside-button" placeholder="Title"/>
+            <input type="text" class="title-input aside-button" th:name="title" th:value="${searchForm.title}" th:attr="name='${searchForm.title}'" placeholder="Title"/>
 
-            <select th:name="categoryName" style="width: 100%" class="filter-category left-aside-button">
-                <option selected th:value="${null}">Category</option>
+            <select th:name="categoryName" style="width: 100%" class="filter-category aside-button">
+                <option selected  th:value="${searchForm.categoryName}" th:attr="name='${searchForm.categoryName}'">Category</option>
                 <option th:each="name : ${categoryNames}"
                         th:value="${name}"
                         th:name="${name}"
@@ -32,12 +32,11 @@
                 </option>
             </select>
 
-            <input type="text" class="username-input left-aside-button" placeholder="Username"/>
+            <input type="text" th:name="username" th:value="${searchForm.username}" th:attr="name='${searchForm.username}'" class="username-input aside-button" placeholder="Username"/>
+            <input type="date" th:name="startDate" th:value="${searchForm.startDate}" th:attr="name='${searchForm.startDate}'" class="startDate-input aside-button" placeholder="StartDate"/>
+            <input type="date" th:name="endDate" th:value="${searchForm.endDate}" th:attr="name='${searchForm.endDate}'" class="endDate-input aside-button" placeholder="EndDate"/>
 
-            <input type="date" class="startDate-input left-aside-button" placeholder="StartDate"/>
-            <input type="date" class="endDate-input left-aside-button" placeholder="EndDate"/>
-
-            <div class="left-aside-button">
+            <div class="aside-button">
                 <a th:href="@{/articles/saved}" class="articles-aside">
                     <button class="custom-btn btn-1">Saved Articles</button>
                 </a>
@@ -48,6 +47,10 @@
     </aside>
 
     <div class="content-container">
+        <div class="user-article-helper-menu">
+
+        </div>
+
         <div class="card" th:each="article: ${articles}">
             <a th:href="@{/articles/{articleId}(articleId = ${article.getArticleId()})}">
                 <div class="card-header">
@@ -100,7 +103,7 @@
 
         <ul th:if="${totalPages} > 1" class="pagination-menu">
             <li id="prev-li">
-                <a th:href="@{/articles(categoryName = ${categoryName})}">
+                <a th:href="@{/articles(categoryName = ${searchForm.categoryName})}">
                     <button id="prev-button">Prev</button>
                 </a>
             </li>
@@ -116,55 +119,55 @@
     </div>
 
     <aside style="float: right">
-        <div class="rating-card">
-            <a th:href="@{/articles/{articleId}(articleId = ${article.getArticleId()})}">
-                <div class="card-header">
-                    <img src="https://www.newsbtc.com/wp-content/uploads/2020/06/mesut-kaya-LcCdl__-kO0-unsplash-scaled.jpg"
-                         alt="ballons"/>
-                </div>
+<!--        <div class="rating-card">-->
+<!--            <a th:href="@{/articles/{articleId}(articleId = ${article.getArticleId()})}">-->
+<!--                <div class="card-header">-->
+<!--                    <img src="https://www.newsbtc.com/wp-content/uploads/2020/06/mesut-kaya-LcCdl__-kO0-unsplash-scaled.jpg"-->
+<!--                         alt="ballons"/>-->
+<!--                </div>-->
 
-                <div class="card-body">
-                    <span class="tag tag-purple" th:text="${article.getCategory().getName()}">Popular</span>
-                    <h4 th:text="${article.getTitle()}">
+<!--                <div class="card-body">-->
+<!--                    <span class="tag tag-purple" th:text="${article.getCategory().getName()}">Popular</span>-->
+<!--                    <h4 th:text="${article.getTitle()}">-->
 
-                    </h4>
-                    <p th:text="${article.getDescription()}">
+<!--                    </h4>-->
+<!--                    <p th:text="${article.getDescription()}">-->
 
-                    </p>
-                    <div class="user">
-                        <img src="https://lh3.googleusercontent.com/ogw/ADGmqu8sn9zF15pW59JIYiLgx3PQ3EyZLFp5Zqao906l=s32-c-mo"
-                             alt="user"/>
-                        <div class="user-info">
-                            <h5 th:text="${article.getUser().getUsername()}"></h5>
+<!--                    </p>-->
+<!--                    <div class="user">-->
+<!--                        <img src="https://lh3.googleusercontent.com/ogw/ADGmqu8sn9zF15pW59JIYiLgx3PQ3EyZLFp5Zqao906l=s32-c-mo"-->
+<!--                             alt="user"/>-->
+<!--                        <div class="user-info">-->
+<!--                            <h5 th:text="${article.getUser().getUsername()}"></h5>-->
 
-                            <small th:text="${article.getCreatedAt()}"></small>
+<!--                            <small th:text="${article.getCreatedAt()}"></small>-->
 
-                        </div>
-                    </div>
-                </div>
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
 
-                <hr class="bottom-hr"/>
-            </a>
-            <div class="footer-card-menu" th:if="${username} != null">
-                <button
-                        th:data-id="${article.getArticleId()}"
-                        onclick="doLike(this.getAttribute('data-id'))">
-                    Like
-                </button>
+<!--                <hr class="bottom-hr"/>-->
+<!--            </a>-->
+<!--            <div class="footer-card-menu" th:if="${username} != null">-->
+<!--                <button-->
+<!--                        th:data-id="${article.getArticleId()}"-->
+<!--                        onclick="doLike(this.getAttribute('data-id'))">-->
+<!--                    Like-->
+<!--                </button>-->
 
-                <div class="dislike">
-                    <button>DISLIKE</button>
-                </div>
+<!--                <div class="dislike">-->
+<!--                    <button>DISLIKE</button>-->
+<!--                </div>-->
 
-                <div class="save">
-                    <button
-                            th:data-id="${article.getArticleId()}"
-                            onclick="doSave(this.getAttribute('data-id'))">
-                        SAVE
-                    </button>
-                </div>
-            </div>
-        </div>
+<!--                <div class="save">-->
+<!--                    <button-->
+<!--                            th:data-id="${article.getArticleId()}"-->
+<!--                            onclick="doSave(this.getAttribute('data-id'))">-->
+<!--                        SAVE-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
     </aside>
 
     <script th:inline="javascript">

@@ -19,38 +19,60 @@
 
     <aside class="left-aside" style="float: left">
         <a th:href="@{/profile/settings}">
-            <button class="left-aside-button">
+            <button class="aside-button">
                 Settings
             </button>
         </a>
 
-        <a th:href="@{/profile/transactions-history}">
-            <button class="left-aside-button">
-                Transaction History
-            </button>
-        </a>
-
         <a th:href="@{/profile/articles}">
-            <button class="left-aside-button">
+            <button class="aside-button">
                 Articles
             </button>
         </a>
 
         <a th:href="@{/profile/statistic}">
-            <button class="left-aside-button">
+            <button class="aside-button">
                 Statistic
             </button>
         </a>
 
         <a th:href="@{/logout}">
-            <button class="left-aside-button">
+            <button class="aside-button">
                 Log out
             </button>
         </a>
 
     </aside>
 
-    <aside class="right-aside" style="float: right"></aside>
+    <aside class="right-aside" style="float: right">
+        <form class="filter-form" th:action="@{/profile/articles}">
+            <button type="submit" disabled style="display: none"></button>
+
+            <input type="text" class="title-input aside-button" th:name="title" th:value="${searchForm.title}" th:attr="name='${searchForm.title}'" placeholder="Title"/>
+
+            <select th:name="categoryName" style="width: 100%" class="filter-category aside-button">
+                <option selected  th:value="${searchForm.categoryName}" th:attr="name='${searchForm.categoryName}'">Category</option>
+                <option th:each="name : ${categoryNames}"
+                        th:value="${name}"
+                        th:name="${name}"
+                        th:text="${name}">
+
+                </option>
+            </select>
+
+            <input type="text" th:name="username" th:value="${searchForm.username}" th:attr="name='${searchForm.username}'" class="username-input aside-button" placeholder="Username"/>
+            <input type="date" th:name="startDate" th:value="${searchForm.startDate}" th:attr="name='${searchForm.startDate}'" class="startDate-input aside-button" placeholder="StartDate"/>
+            <input type="date" th:name="endDate" th:value="${searchForm.endDate}" th:attr="name='${searchForm.endDate}'" class="endDate-input aside-button" placeholder="EndDate"/>
+
+            <div class="aside-button">
+                <a th:href="@{/articles/saved}" class="articles-aside">
+                    <button class="custom-btn btn-1">Saved Articles</button>
+                </a>
+            </div>
+
+            <button class="button search-button" type="submit">Filter</button>
+        </form>
+    </aside>
 
     <div class="content-container">
         <div class="card" th:each="article: ${articles}">

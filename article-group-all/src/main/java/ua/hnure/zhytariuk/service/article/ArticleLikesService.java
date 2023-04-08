@@ -22,9 +22,10 @@ public class ArticleLikesService {
         return articleLikesRepository.findByUserUsernameAndArticleArticleId(username, articleId);
     }
 
-    public List<ArticleLike> findAllArticleLikesByUsernameAuthor(final String username,
-                                                                 final Integer month) {
-        return articleLikesRepository.findAllArticleLikesByUsernameAuthorAndMonth(username, month);
+    public List<ArticleLike> findAllArticleLikesByUsernameAuthorAndMonthAndYear(final String username,
+                                                                                final Integer month,
+                                                                                final Integer year) {
+        return articleLikesRepository.findAllArticleLikesByUsernameAuthorAndYearAndMonth(username, month, year);
     }
 
     @Transactional

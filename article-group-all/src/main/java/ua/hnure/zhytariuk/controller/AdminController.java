@@ -51,8 +51,8 @@ public class AdminController {
                 ArticleStatus.ON_MODERATION
         );
 
+        model.addAttribute("searchForm", form);
         model.addAttribute("articles", articlePage.getContent());
-        model.addAttribute("categoryName", form.getCategoryName());
         model.addAttribute("currentPage", articlePage.getNumber());
         model.addAttribute("totalPages", articlePage.getTotalPages());
         model.addAttribute("categoryNames", categoryNames);

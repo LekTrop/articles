@@ -8,6 +8,7 @@ import ua.hnure.zhytariuk.models.domain.Tag;
 import ua.hnure.zhytariuk.models.domain.user.User;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -45,7 +46,7 @@ public class Article {
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
@@ -53,7 +54,7 @@ public class Article {
 
     @CreationTimestamp
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private LocalDate updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "fk_user_id", nullable = false)

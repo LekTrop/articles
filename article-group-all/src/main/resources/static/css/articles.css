@@ -1,6 +1,14 @@
 .wrapper {
     display: flex;
+    flex-wrap: wrap;
     margin-top: 50px;
+}
+
+.user-article-helper-menu{
+    height: 40px;
+    width: 100%;
+    background-color: #EEEEEE;
+    border-radius: 10px;
 }
 
 .content-container {
@@ -218,7 +226,7 @@ aside .articles-button {
     margin-top: 50px;
 }
 
-.left-aside-button{
+.aside-button{
     width: 100%;
     height: 15%;
 }

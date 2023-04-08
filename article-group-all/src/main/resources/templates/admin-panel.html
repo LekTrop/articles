@@ -12,13 +12,17 @@
 <body>
 <header th:insert="fragments/header-fragment::header"></header>
 <div class="wrapper">
-
     <aside class="left-aside" style="float: left">
         <form class="filter-form" th:action="@{/articles}">
             <button type="submit" disabled style="display: none"></button>
 
-            <select th:name="categoryName" class="filter-category">
-                <option selected th:value="${null}">Category</option>
+            <input type="text" class="title-input aside-button" th:name="title" th:value="${searchForm.title}"
+                   th:attr="name='${searchForm.title}'" placeholder="Title"/>
+
+            <select th:name="categoryName" style="width: 100%" class="filter-category aside-button">
+                <option selected th:value="${searchForm.categoryName}" th:attr="name='${searchForm.categoryName}'">
+                    Category
+                </option>
                 <option th:each="name : ${categoryNames}"
                         th:value="${name}"
                         th:name="${name}"
@@ -27,30 +31,24 @@
                 </option>
             </select>
 
-            <div class="saved-articles">
+            <input type="text" th:name="username" th:value="${searchForm.username}"
+                   th:attr="name='${searchForm.username}'" class="username-input aside-button"
+                   placeholder="Username"/>
+            <input type="date" th:name="startDate" th:value="${searchForm.startDate}"
+                   th:attr="name='${searchForm.startDate}'" class="startDate-input aside-button"
+                   placeholder="StartDate"/>
+            <input type="date" th:name="endDate" th:value="${searchForm.endDate}" th:attr="name='${searchForm.endDate}'"
+                   class="endDate-input aside-button" placeholder="EndDate"/>
+
+            <div class="aside-button">
                 <a th:href="@{/articles/saved}" class="articles-aside">
                     <button class="custom-btn btn-1">Saved Articles</button>
                 </a>
             </div>
 
-            <div class="price-block">
-                <div class="min-price">
-                    <input type="number" th:name="minPrice" placeholder="Min Price">
-                </div>
-
-                <div class="max-price">
-                    <input type="number" th:name="maxPrice" placeholder="Max Price">
-                </div>
-            </div>
-
             <button class="button search-button" type="submit">Filter</button>
-            <button class="button" type="reset">Reset</button>
         </form>
     </aside>
-
-    <div class="filter-container">
-
-    </div>
 
     <div class="content-container">
         <div class="card" th:each="article: ${articles}">
@@ -194,6 +192,6 @@
     </script>
 
 </div>
-<footer th:insert="fragments/header-fragment::header"></footer>
+<footer th:insert="fragments/footer-fragment::footer"></footer>
 </body>
 </html>

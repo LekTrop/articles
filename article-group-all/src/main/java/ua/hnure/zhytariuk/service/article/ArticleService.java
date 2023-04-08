@@ -34,12 +34,9 @@ import static ua.hnure.zhytariuk.utils.PaginationUtils.DEFAULT_ARTICLE_PAGINATIO
 public class ArticleService {
 
     private static final String TAG_DELIMITER = ",";
-    public static final String ARTICLE_PATH = "C:\\Users\\iroof\\Downloads\\config-service\\article-group-all\\src\\main\\resources\\articles";
 
     @NonNull
     private final UserService userService;
-    @NonNull
-    private final ArticleWriter articleWriter;
     @NonNull
     private ArticleRepository articleRepository;
     @NonNull
@@ -108,7 +105,6 @@ public class ArticleService {
         articleModerationRepository.save(ArticleModeration.builder()
                                                           .article(article)
                                                           .build());
-//        articleWriter.createNewFolder(ARTICLE_PATH, createdArticle.getArticleId());
 
         return createdArticle;
     }
