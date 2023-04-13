@@ -29,8 +29,7 @@ public class SpringSecurityConfiguration {
                     .disable();
 
         httpSecurity.authorizeHttpRequests(request -> {
-            request.anyRequest()
-                   .permitAll();
+            request.anyRequest().permitAll();
         });
 
         httpSecurity.formLogin().loginPage("/login");

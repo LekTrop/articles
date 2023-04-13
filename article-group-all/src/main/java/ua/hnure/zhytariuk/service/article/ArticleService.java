@@ -18,10 +18,10 @@ import ua.hnure.zhytariuk.repo.article.ArticleRepository;
 import ua.hnure.zhytariuk.service.CategoryService;
 import ua.hnure.zhytariuk.service.TagService;
 import ua.hnure.zhytariuk.service.UserService;
-import ua.hnure.zhytariuk.service.writer.ArticleWriter;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -45,6 +45,11 @@ public class ArticleService {
     private TagService tagService;
     @NonNull
     private ArticleModerationRepository articleModerationRepository;
+
+    public List<Article> findAllByStatusAndUsername(final ArticleStatus articleStatus,
+                                                    final String username){
+        return articleRepository.findAllByStatusAndUserUsername(articleStatus, username);
+    }
 
     @Transactional(readOnly = true)
     public Page<Article> findAllWithFilters(

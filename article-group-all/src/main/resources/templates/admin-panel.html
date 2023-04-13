@@ -8,6 +8,7 @@
     <link type="text/css" th:href="@{/css/footer.css}" rel="stylesheet">
     <link type="text/css" th:href="@{/css/articles.css}" rel="stylesheet"/>
     <link type="text/css" th:href="@{/css/main.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/css/admin-panel.css}" rel="stylesheet">
 </head>
 <body>
 <header th:insert="fragments/header-fragment::header"></header>
@@ -51,52 +52,38 @@
     </aside>
 
     <div class="content-container">
-        <div class="card" th:each="article: ${articles}">
-            <a th:href="@{/admin-panel/moderation/{articleId}(articleId = ${article.getArticleId()})}">
+        <div class="card" th:each="article: ${articleModerations}">
+            <a th:href="@{/admin-panel/moderation/{articleId}(articleId = ${article.getArticle().getArticleId()})}">
                 <div class="card-header">
                     <img src="https://www.newsbtc.com/wp-content/uploads/2020/06/mesut-kaya-LcCdl__-kO0-unsplash-scaled.jpg"
                          alt="ballons"/>
                 </div>
 
                 <div class="card-body">
-                    <span class="tag tag-purple" th:text="${article.getCategory().getName()}">Popular</span>
-                    <h4 th:text="${article.getTitle()}">
+                    <span class="tag tag-purple" th:text="${article.getArticle().getCategory().getName()}">Popular</span>
+                    <h4 th:text="${article.getArticle().getTitle()}">
 
                     </h4>
-                    <p th:text="${article.getDescription()}">
+                    <p th:text="${article.getArticle().getDescription()}">
 
                     </p>
                     <div class="user">
                         <img src="https://lh3.googleusercontent.com/ogw/ADGmqu8sn9zF15pW59JIYiLgx3PQ3EyZLFp5Zqao906l=s32-c-mo"
                              alt="user"/>
                         <div class="user-info">
-                            <h5 th:text="${article.getUser().getUsername()}"></h5>
+                            <h5 th:text="${article.getArticle().getUser().getUsername()}"></h5>
 
-                            <small th:text="${article.getCreatedAt()}"></small>
+                            <small th:text="${article.getArticle().getCreatedAt()}"></small>
 
                         </div>
                     </div>
-                </div>
 
-                <hr class="bottom-hr"/>
+                    <hr class="bottom-hr"/>
+                    <div class="footer-card-menu">
+                        <a th:text="${article.getStatus()}"></a>
+                    </div>
+                </div>
             </a>
-            <div class="footer-card-menu" th:if="${username} != null">
-                <div class="like">
-                    <button>LIKE</button>
-                </div>
-
-                <div class="dislike">
-                    <button>DISLIKE</button>
-                </div>
-
-                <div class="save">
-                    <button
-                            th:data-id="${article.getArticleId()}"
-                            onclick="doSave(this.getAttribute('data-id'))">
-                        SAVE
-                    </button>
-                </div>
-            </div>
         </div>
 
         <ul th:if="${totalPages} > 1" class="pagination-menu">
@@ -118,7 +105,7 @@
 
     <aside style="float: right">
         <a th:href="@{/admin-panel/moderation}">
-            <button>
+            <button class="moderation-button">
                 Moderation
             </button>
         </a>

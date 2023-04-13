@@ -68,7 +68,6 @@ public class Article {
     @JoinColumn(name = "fk_category_id", nullable = false)
     private Category category;
 
-
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ArticleLike> articleLikes = new ArrayList<>();
 

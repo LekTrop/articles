@@ -35,6 +35,8 @@ public class User implements UserDetails {
     private String email;
     @Column(name = "password", nullable = false)
     private String password;
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "is_enabled")
     private Boolean isEnabled;
@@ -74,6 +76,11 @@ public class User implements UserDetails {
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "user")
     private List<Recommendations> recommendations = new ArrayList<>();
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "user")
+    private List<Subscriber> subscribers = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

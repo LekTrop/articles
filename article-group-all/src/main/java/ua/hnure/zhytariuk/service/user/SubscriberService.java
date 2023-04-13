@@ -52,4 +52,12 @@ public class SubscriberService {
                                                                         final Integer year) {
         return userSubscribersRepository.findAllByUserSubscriberUsernameAndYearAndMonth(username, month, year);
     }
+
+    public List<Subscriber> findAllFollowersByUsername(final String username) {
+        return userSubscribersRepository.findAllByUserUsername(username);
+    }
+
+    public List<Subscriber> findAllFollowingByUsername(final String username) {
+        return userSubscribersRepository.findAllBySubscriberUsername(username);
+    }
 }

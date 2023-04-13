@@ -14,7 +14,7 @@
     <div class="header-ul">
         <ul>
             <li><a th:href="@{/articles}">Articles</a></li>
-            <li><a sec:authorize="hasAuthority('ROLE_ADMIN')" th:href="@{/admin-panel}">Admin Panel</a></li>
+            <li><a sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin-panel}">Admin Panel</a></li>
             <li><a sec:authorize="!isAuthenticated()" th:href="@{/login}">Login</a></li>
             <li><a sec:authorize="!isAuthenticated()" th:href="@{/registration}">Registration</a></li>
         </ul>

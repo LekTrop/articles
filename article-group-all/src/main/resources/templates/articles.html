@@ -37,8 +37,8 @@
             <input type="date" th:name="endDate" th:value="${searchForm.endDate}" th:attr="name='${searchForm.endDate}'" class="endDate-input aside-button" placeholder="EndDate"/>
 
             <div class="aside-button">
-                <a th:href="@{/articles/saved}" class="articles-aside">
-                    <button class="custom-btn btn-1">Saved Articles</button>
+                <a class="articles-aside">
+                    <button type="reset" class="custom-btn btn-1">Reset</button>
                 </a>
             </div>
 
@@ -47,10 +47,6 @@
     </aside>
 
     <div class="content-container">
-        <div class="user-article-helper-menu">
-
-        </div>
-
         <div class="card" th:each="article: ${articles}">
             <a th:href="@{/articles/{articleId}(articleId = ${article.getArticleId()})}">
                 <div class="card-header">

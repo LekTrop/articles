@@ -42,28 +42,8 @@
 
     </aside>
 
-    <div class="content-profile-page">
-        <div class="profile-user-page card">
-            <div class="img-user-profile">
-                <img class="avatar" src="http://gravatar.com/avatar/288ce55a011c709f4e17aef7e3c86c64?s=200" alt="jofpin"/>
-            </div>
+    <div class="content-container">
 
-            <a th:href="@{/profile/edit}">Edit</a>
-
-            <div class="user-profile-data">
-                <h1 th:text="${user.username}"></h1>
-            </div>
-
-            <div class="description-profile" th:text="${description}">
-
-            </div>
-
-            <ul class="data-user">
-                <li><a><strong th:text="${numberOfArticles}"></strong><span>Articles</span></a></li>
-                <li><a><strong th:text="${numberOfSubscribers}"></strong><span>Followers</span></a></li>
-                <li><a><strong th:text="${numberOfFollowing}"></strong><span>Followings</span></a></li>
-            </ul>
-        </div>
     </div>
 </div>
 

@@ -11,6 +11,7 @@ import ua.hnure.zhytariuk.models.domain.article.ArticleStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 public interface ArticleRepository extends JpaRepository<Article, String> {
 
@@ -33,4 +34,6 @@ public interface ArticleRepository extends JpaRepository<Article, String> {
             final @Param("endDate") LocalDate endDate,
             final @Param("status") ArticleStatus status,
             final Pageable pageable);
+
+    List<Article> findAllByStatusAndUserUsername(final ArticleStatus status, final String username);
 }

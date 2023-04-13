@@ -5,10 +5,31 @@
 }
 
 .user-article-helper-menu{
+    display: flex;
     height: 40px;
     width: 100%;
-    background-color: #EEEEEE;
+    justify-content: space-between;
+}
+
+.add-article-button{
+    height: 100%;
+    width: 100px;
     border-radius: 10px;
+    background-color: #EEEEEE;
+}
+
+.saved-button{
+    height: 100%;
+    width: 100px;
+    border-radius: 10px;
+    background-color: #EEEEEE;
+}
+
+.liked-button{
+    height: 100%;
+    width: 100px;
+    border-radius: 10px;
+    background-color: #EEEEEE;
 }
 
 .content-container {
@@ -50,7 +71,7 @@ a {
 
 aside {
     background-color: white;
-    width: 15%;
+    width: 13%;
     height: 500px;
 
     border-radius: 2%;
@@ -180,7 +201,8 @@ aside .articles-button {
 }
 
 .bottom-hr{
-    width: 280px;
+    width: 300px;
+    margin-right: 20px;
 }
 
 .filter-form{
@@ -200,15 +222,15 @@ aside .articles-button {
     margin-top: 25px;
     padding: 16px;
     outline: none;
-    overflow: hidden;
     height: 200px;
-    width: 1000px;
+    width: 100%;
     border: none;
     background-color: white;
     border-radius: 1%;
 }
 
 .content-container-moderation{
+    margin-left: 9.5%;
     padding: 16px;
     outline: none;
     overflow: hidden;
@@ -222,7 +244,6 @@ aside .articles-button {
 .wrapper-moderation {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     margin-top: 50px;
 }
 

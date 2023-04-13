@@ -16,7 +16,7 @@ public class ArticleViewService {
     private final ArticleService articleService;
     private final UserService userService;
     private final ArticleViewRepository articleViewRepository;
-
+    
     public void save(final String articleId, final String username) {
         final Article article = articleService.findById(articleId);
 

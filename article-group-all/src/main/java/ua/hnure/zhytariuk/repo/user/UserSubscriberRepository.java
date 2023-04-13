@@ -15,4 +15,8 @@ public interface UserSubscriberRepository extends JpaRepository<Subscriber, Stri
     List<Subscriber> findAllByUserSubscriberUsernameAndYearAndMonth(String username,
                                                                     Integer month,
                                                                     Integer year);
+
+    List<Subscriber> findAllByUserUsername(final String username);
+
+    List<Subscriber> findAllBySubscriberUsername(String username);
 }

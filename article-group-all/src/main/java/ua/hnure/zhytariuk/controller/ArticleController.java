@@ -44,13 +44,7 @@ public class ArticleController {
     @NonNull
     private final CategoryService categoryService;
     @NonNull
-    private final ArticleCreationFormValidator articleCreationFormValidator;
-    @NonNull
     private final ArticleMapper articleMapper;
-    @NonNull
-    private final ArticleSavedService articleSavedService;
-    @NonNull
-    private final SavedArticleMapper savedArticleMapper;
     @NonNull
     private final ArticleViewService articleViewService;
     @NonNull
@@ -81,63 +75,8 @@ public class ArticleController {
         model.addAttribute("currentPage", articlePage.getNumber());
         model.addAttribute("totalPages", articlePage.getTotalPages());
         model.addAttribute("categoryNames", categoryNames);
-//        model.addAttribute("article", articlePage.getContent().get(0));
 
         return "articles";
-    }
-
-    @GetMapping("articles/creation")
-    public String getCreateArticlePage(
-            final Authentication authentication,
-            final Model model) {
-
-        final String username = "admin";
-
-//                Optional.ofNullable(authentication)
-//                                        .map(Authentication::getName)
-//                                        .orElse(null);
-
-        if (username == null || Objects.equals("anonymousUser", username)) {
-            return "redirect:/login";
-        }
-
-        model.addAttribute("creationForm", new ArticleCreationForm());
-        model.addAttribute("categoryNames", categoryService.findAllCategoryNames());
-
-        return "article-creation";
-    }
-
-    @PostMapping("articles/creation")
-    public String createArticle(
-            final Model model,
-            final Authentication authentication,
-            final @Validated @ModelAttribute("creationForm") ArticleCreationForm creationForm,
-            final BindingResult bindingResult
-    ) {
-
-        final String username = Optional.ofNullable(authentication)
-                                        .map(Authentication::getName)
-                                        .orElse(null);
-
-        if (username == null || Objects.equals("anonymousUser", username)) {
-            return "redirect:/login";
-        }
-
-        articleCreationFormValidator.validate(creationForm, bindingResult);
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("categoryNames", categoryService.findAllCategoryNames());
-            return "article-creation";
-        }
-
-        articleService.save(
-                articleMapper.toDomain(creationForm),
-                creationForm.getCategoryName(),
-                creationForm.getTags(),
-                username
-        );
-
-        return "redirect:/";
     }
 
     @GetMapping("articles/{articleId}")
@@ -153,20 +92,5 @@ public class ArticleController {
         model.addAttribute("article", article);
 
         return "article";
-    }
-
-    @GetMapping("articles/saved")
-    public String getSavedArticlesPage(final Model model,
-                                       final ArticleSearchFilterForm searchFilterForm,
-                                       final Authentication authentication) {
-        final List<SavedArticleApi> articleApis = articleSavedService.findAllByUserUsername(authentication.getName())
-                                                                     .stream()
-                                                                     .map(savedArticleMapper::toApi)
-                                                                     .collect(Collectors.toList());
-
-        model.addAttribute("searchForm", searchFilterForm);
-        model.addAttribute("savedArticles", articleApis);
-
-        return "saved-articles";
     }
 }

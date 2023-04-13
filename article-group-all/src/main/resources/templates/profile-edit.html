@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+
+    <link type="text/css" th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/css/profile-edit.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/css/footer.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/css/profile.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/css/main.css}" rel="stylesheet">
+</head>
+<body>
+
+<header th:insert="fragments/header-fragment::header"/>
+
+<div class="wrapper">
+
+    <aside class="left-aside" style="float: left">
+        <a th:href="@{/profile}">
+            <button class="aside-button">
+                Profile
+            </button>
+        </a>
+
+        <a th:href="@{/profile/articles}">
+            <button class="aside-button">
+                Articles
+            </button>
+        </a>
+
+        <a th:href="@{/profile/statistic}">
+            <button class="aside-button">
+                Statistic
+            </button>
+        </a>
+
+        <a th:href="@{/logout}">
+            <button class="aside-button">
+                Log out
+            </button>
+        </a>
+
+    </aside>
+
+    <form class="profile-page" th:object="${updateUserRequest}" th:action="@{/profile/edit}" method="post">
+
+        <div class="edit-block">
+            <input type="file" class="input-image" placeholder="Choose image">
+        </div>
+
+        <div class="edit-block">
+            <input type="email" th:field="${updateUserRequest.email}" th:value="${user.email}" placeholder="email" th:attr="name='${user.email}'"
+                   class="input-email">
+        </div>
+
+        <div class="edit-block">
+            <input type="text" th:field="${updateUserRequest.username}" placeholder="username" th:attr="name='${user.username}'"
+                   class="input-username">
+        </div>
+
+        <div class="edit-block">
+            <input type="password" th:field="${updateUserRequest.oldPassword}" class="input-new-password" placeholder="type old password">
+
+        </div>
+
+        <div class="edit-block">
+            <input type="password" th:field="${updateUserRequest.newPassword}" class="input-new-password" placeholder="type new password">
+
+        </div>
+
+        <div class="edit-block">
+
+            <input type="password" th:field="${updateUserRequest.repeatPassword}" class="input-new-password"
+                   placeholder="repeat new password">
+        </div>
+
+
+        <button style="width: 50px; height: 25px" type="submit">Edit</button>
+    </form>
+</div>
+
+<footer th:insert="fragments/footer-fragment::footer"/>
+</body>
+</html>

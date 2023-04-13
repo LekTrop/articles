@@ -16,22 +16,20 @@
 
 <body>
 <header th:insert="fragments/header-fragment::header"></header>
-<aside style="float: left">
 
-</aside>
-
-<aside style="float: right">
-
-</aside>
 
 <div class="wrapper-moderation">
+
+    <aside style="float: left">
+
+    </aside>
 
     <div id="content-container-id" class="content-container-moderation" contenteditable="true" spellcheck="false"
          th:utext="${article.content}">
 
     </div>
 
-    <div class="moderation-container">
+    <aside style="float: right;margin-left: auto;">
         <form method="post"
               th:object="${articleModeration}"
               th:action="@{/admin-panel/moderation/{articleId}(articleId = ${article.getArticleId()})}">
@@ -40,9 +38,9 @@
                         th:value="${status}" th:text="${status}"></option>
             </select>
             <input th:field="${articleModeration.additionalInformation}"/>
-            <button type="submit"></button>
+            <button type="submit">Submit</button>
         </form>
-    </div>
+    </aside>
 
 </div>
 

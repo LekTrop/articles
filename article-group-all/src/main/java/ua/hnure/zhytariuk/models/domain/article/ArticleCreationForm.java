@@ -18,5 +18,4 @@ public class ArticleCreationForm {
     private String content;
     private String tags;
     private String categoryName;
-    private BigDecimal price;
 }

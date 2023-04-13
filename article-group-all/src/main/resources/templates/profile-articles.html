@@ -18,9 +18,9 @@
 <div class="wrapper">
 
     <aside class="left-aside" style="float: left">
-        <a th:href="@{/profile/settings}">
+        <a th:href="@{/profile}">
             <button class="aside-button">
-                Settings
+                Profile
             </button>
         </a>
 
@@ -48,10 +48,13 @@
         <form class="filter-form" th:action="@{/profile/articles}">
             <button type="submit" disabled style="display: none"></button>
 
-            <input type="text" class="title-input aside-button" th:name="title" th:value="${searchForm.title}" th:attr="name='${searchForm.title}'" placeholder="Title"/>
+            <input type="text" class="title-input aside-button" th:name="title" th:value="${searchForm.title}"
+                   th:attr="name='${searchForm.title}'" placeholder="Title"/>
 
             <select th:name="categoryName" style="width: 100%" class="filter-category aside-button">
-                <option selected  th:value="${searchForm.categoryName}" th:attr="name='${searchForm.categoryName}'">Category</option>
+                <option selected th:value="${searchForm.categoryName}" th:attr="name='${searchForm.categoryName}'">
+                    Category
+                </option>
                 <option th:each="name : ${categoryNames}"
                         th:value="${name}"
                         th:name="${name}"
@@ -60,9 +63,13 @@
                 </option>
             </select>
 
-            <input type="text" th:name="username" th:value="${searchForm.username}" th:attr="name='${searchForm.username}'" class="username-input aside-button" placeholder="Username"/>
-            <input type="date" th:name="startDate" th:value="${searchForm.startDate}" th:attr="name='${searchForm.startDate}'" class="startDate-input aside-button" placeholder="StartDate"/>
-            <input type="date" th:name="endDate" th:value="${searchForm.endDate}" th:attr="name='${searchForm.endDate}'" class="endDate-input aside-button" placeholder="EndDate"/>
+            <input type="text" th:name="username" th:value="${searchForm.username}"
+                   th:attr="name='${searchForm.username}'" class="username-input aside-button" placeholder="Username"/>
+            <input type="date" th:name="startDate" th:value="${searchForm.startDate}"
+                   th:attr="name='${searchForm.startDate}'" class="startDate-input aside-button"
+                   placeholder="StartDate"/>
+            <input type="date" th:name="endDate" th:value="${searchForm.endDate}" th:attr="name='${searchForm.endDate}'"
+                   class="endDate-input aside-button" placeholder="EndDate"/>
 
             <div class="aside-button">
                 <a th:href="@{/articles/saved}" class="articles-aside">
@@ -75,8 +82,28 @@
     </aside>
 
     <div class="content-container">
+        <div class="user-article-helper-menu">
+            <div class="add-articles">
+                <a th:href="@{/profile/articles/creation}">
+                    <button class="add-article-button">Add Article</button>
+                </a>
+            </div>
+
+            <div class="saved-articles">
+                <a th:href="@{/profile/articles/saved}">
+                    <button class="saved-button">Saved Articles</button>
+                </a>
+            </div>
+
+            <div class="liked-articles">
+                <a th:href="@{/profile/articles/liked}">
+                    <button class="liked-button">Liked Articles</button>
+                </a>
+            </div>
+        </div>
+
         <div class="card" th:each="article: ${articles}">
-            <a th:href="@{/articles/{articleId}(articleId = ${article.getArticleId()})}">
+            <a th:href="@{/profile/articles/{articleId}(articleId = ${article.getArticleId()})}">
                 <div class="card-header">
                     <img src="https://www.newsbtc.com/wp-content/uploads/2020/06/mesut-kaya-LcCdl__-kO0-unsplash-scaled.jpg"
                          alt="ballons"/>

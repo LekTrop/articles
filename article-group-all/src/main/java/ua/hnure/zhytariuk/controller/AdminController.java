@@ -4,6 +4,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,9 @@ import ua.hnure.zhytariuk.service.UserService;
 import ua.hnure.zhytariuk.service.article.ArticleService;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static ua.hnure.zhytariuk.controller.ControllerUtils.getAuthNameOrNull;
 
 @Controller
 @RequiredArgsConstructor
@@ -51,8 +55,13 @@ public class AdminController {
                 ArticleStatus.ON_MODERATION
         );
 
+        final List<ArticleModeration> articleModerations = articleModerationRepository.findAllById(articlePage.getContent()
+                                                                                                              .stream()
+                                                                                                              .map(Article::getArticleId)
+                                                                                                              .collect(Collectors.toList()));
+
         model.addAttribute("searchForm", form);
-        model.addAttribute("articles", articlePage.getContent());
+        model.addAttribute("articleModerations", articleModerations);
         model.addAttribute("currentPage", articlePage.getNumber());
         model.addAttribute("totalPages", articlePage.getTotalPages());
         model.addAttribute("categoryNames", categoryNames);
@@ -82,7 +91,12 @@ public class AdminController {
     ) {
         final ArticleModeration existed = articleModerationRepository.findById(articleId)
                                                                      .orElse(null);
-        final User user = userService.loadUserByUsername("admin");
+
+        try {
+            final User user = userService.loadUserByUsername(getAuthNameOrNull(authentication));
+        } catch (final UsernameNotFoundException ex) {
+            throw new UsernameNotFoundException("User was not found", ex);
+        }
 
         if (newModeration != null && existed != null) {
             if (newModeration.getStatus() != existed.getStatus()) {
@@ -94,7 +108,6 @@ public class AdminController {
                                                             .additionalInformation(newModeration.getAdditionalInformation())
                                                             .article(article.toBuilder()
                                                                             .status(ArticleStatus.PUBLISHED)
-                                                                            .user(user)
                                                                             .build())
                                                             .build());
                 } else if (newModeration.getStatus() == ModerationStatus.CANCELED) {
@@ -103,7 +116,6 @@ public class AdminController {
                                                             .additionalInformation(newModeration.getAdditionalInformation())
                                                             .article(article.toBuilder()
                                                                             .status(ArticleStatus.CANCELED_MODERATION)
-                                                                            .user(user)
                                                                             .build())
                                                             .build());
                 } else {

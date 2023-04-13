@@ -12,6 +12,7 @@ import lombok.*;
 @Builder(toBuilder = true)
 public class UserApi {
     private String id;
+    private String description;
     private String username;
     private String password;
     private String email;
