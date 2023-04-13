@@ -10,6 +10,7 @@ import org.thymeleaf.util.StringUtils;
 import ua.hnure.zhytariuk.models.domain.Category;
 import ua.hnure.zhytariuk.models.domain.Tag;
 import ua.hnure.zhytariuk.models.domain.article.Article;
+import ua.hnure.zhytariuk.models.domain.article.ArticleCreationForm;
 import ua.hnure.zhytariuk.models.domain.article.ArticleModeration;
 import ua.hnure.zhytariuk.models.domain.article.ArticleStatus;
 import ua.hnure.zhytariuk.models.domain.user.User;
@@ -132,5 +133,27 @@ public class ArticleService {
     public Article findById(final String articleId) {
         return articleRepository.findById(articleId)
                                 .orElseThrow();
+    }
+
+    public void update(final ArticleCreationForm articleCreationForm, final String articleId) {
+        final Article existed = findById(articleId);
+
+        final Article updated = updateFieldsThatNotEqualsWithExisted(articleCreationForm, existed);
+
+        articleRepository.save(updated);
+    }
+
+    private Article updateFieldsThatNotEqualsWithExisted(ArticleCreationForm articleCreationForm, Article existed) {
+        final Article.ArticleBuilder articleBuilder = existed.toBuilder();
+
+        if(!Objects.equals(articleCreationForm.getTitle(), existed.getTitle())){
+            articleBuilder.title(articleCreationForm.getTitle());
+        }
+
+        if(!Objects.equals(articleCreationForm.getContent(), existed.getContent())){
+            articleBuilder.content(articleCreationForm.getContent());
+        }
+
+        return articleBuilder.build();
     }
 }

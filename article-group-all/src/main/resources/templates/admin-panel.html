@@ -14,7 +14,7 @@
 <header th:insert="fragments/header-fragment::header"></header>
 <div class="wrapper">
     <aside class="left-aside" style="float: left">
-        <form class="filter-form" th:action="@{/articles}">
+        <form class="filter-form" th:action="@{/admin-panel}">
             <button type="submit" disabled style="display: none"></button>
 
             <input type="text" class="title-input aside-button" th:name="title" th:value="${searchForm.title}"

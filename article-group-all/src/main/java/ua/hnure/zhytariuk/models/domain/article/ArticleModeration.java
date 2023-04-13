@@ -36,7 +36,7 @@ public class ArticleModeration {
     @JoinColumn(name = "fk_user_id")
     private User moderator;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     @MapsId
     @JoinColumn(name = "id")
     private Article article;

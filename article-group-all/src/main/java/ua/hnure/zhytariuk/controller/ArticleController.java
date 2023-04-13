@@ -83,7 +83,7 @@ public class ArticleController {
     public String getArticlePage(final @PathVariable String articleId,
                                  final Authentication authentication,
                                  final Model model) {
-        final ArticleApi article = articleMapper.toApi(articleService.findById(articleId));
+        final Article article = articleService.findById(articleId);
 
         if (authentication != null) {
             articleViewService.save(articleId, authentication.getName());

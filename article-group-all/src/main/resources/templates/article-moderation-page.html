@@ -24,9 +24,10 @@
 
     </aside>
 
-    <div id="content-container-id" class="content-container-moderation" contenteditable="true" spellcheck="false"
-         th:utext="${article.content}">
+    <div id="content-container-id" class="content-container-html">
+        <div id="content">
 
+        </div>
     </div>
 
     <aside style="float: right;margin-left: auto;">
@@ -45,5 +46,10 @@
 </div>
 
 <footer th:insert="fragments/footer-fragment::footer"></footer>
+<script th:inline="javascript" th:name="on-load">
+    window.onload = function () {
+        document.getElementById("content").innerHTML = [[${article.getContent()}]];
+    }
+</script>
 </body>
 </html>

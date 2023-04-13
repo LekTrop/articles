@@ -16,13 +16,14 @@
 <body>
 <div th:insert="~{fragments/header-fragment :: header}"></div>
 
-<form class="text-editor" th:field="${creationForm}" th:action="@{/profile/articles/creation}" method="post">
+<form class="text-editor" th:object="${updateForm}"
+      th:action="@{/profile/articles/{articleId}/edit(articleId = ${article.getArticleId()})}" method="post">
     <button type="submit" disabled style="display: none" aria-hidden="true"></button>
 
     <div class="row centered">
         <div class="col">
             <label class="input-label">
-                <input class="input-title" type="text" placeholder="Type title ..." th:field="${creationForm.title}"
+                <input id="title-input" class="input-title" th:field="*{title}" type="text" placeholder="Type title ..."
                        maxlength="5000">
             </label>
         </div>
@@ -31,9 +32,8 @@
     <div class="row centered">
         <div class="col">
             <label class="input-label">
-                <textarea class="input-description" placeholder="Type description ..."
-                          th:field="${creationForm.description}">
-
+                <textarea id="description-input" class="input-description" placeholder="Type description ..."
+                          th:field="*{description}">
                 </textarea>
             </label>
         </div>
@@ -41,7 +41,7 @@
 
     <div class="row centered">
         <div class="col">
-            <select th:field="${creationForm.categoryName}">
+            <select id="category-input" th:field="${updateForm.categoryName}">
                 <option selected value="null">Select Category</option>
                 <option th:each="name: ${categoryNames}" th:text="${name}" th:value="${name}"></option>
             </select>
@@ -113,7 +113,7 @@
             <div id="content" contenteditable="true" spellcheck="false">
                 Text there
             </div>
-            <input id="contentFormText" type="text" style="display: none" th:field="${creationForm.content}">
+            <input id="contentFormText" type="text" style="display: none" th:field="${updateForm.content}">
             <button type="submit" onclick="onSubmit()"> Sumbit Form</button>
         </div>
     </div>
@@ -188,6 +188,13 @@
         } else if (value === 'pdf') {
             html2pdf(content).save(filename.value);
         }
+    }
+</script>
+<script th:inline="javascript" th:name="on-load">
+    window.onload = function () {
+        document.getElementById("title-input").value = [[${article.getTitle()}]];
+        document.getElementById("description-input").value = [[${article.getDescription()}]];
+        document.getElementById("content").innerHTML = [[${article.getContent()}]];
     }
 </script>
 </body>

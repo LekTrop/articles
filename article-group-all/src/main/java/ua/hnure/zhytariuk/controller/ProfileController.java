@@ -316,21 +316,31 @@ public class ProfileController {
     @GetMapping("articles/{articleId}/edit")
     public String getUpdateArticlePage(
             final Model model,
+            final @PathVariable String articleId,
             final Authentication authentication
     ) {
         final String username = getAuthNameOrNull(authentication);
+//
+//        try {
+//            final User user = userService.loadUserByUsername(username);
+//
+//        } catch (final UsernameNotFoundException ex) {
+//            return "redirect:/login";
+//        }
 
-        try {
-            final User user = userService.loadUserByUsername(username);
-
-        } catch (final UsernameNotFoundException ex) {
-            return "redirect:/login";
-        }
-
+        model.addAttribute("article", articleService.findById(articleId));
         model.addAttribute("updateForm", new ArticleCreationForm());
         model.addAttribute("categoryNames", categoryService.findAllCategoryNames());
 
         return "article-update";
+    }
+
+    @PostMapping("articles/{articleId}/edit")
+    public String updateArticle(final @PathVariable String articleId,
+                                final @Validated @ModelAttribute("updateForm") ArticleCreationForm articleCreationForm) {
+        articleService.update(articleCreationForm, articleId);
+
+        return "redirect:/profile/articles/{articleId}";
     }
 
     private DateStatisticApi getDateStatistic(String date) {

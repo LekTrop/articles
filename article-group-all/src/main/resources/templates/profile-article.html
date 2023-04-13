@@ -29,13 +29,18 @@
         </div>
     </aside>
 
-    <div id="content-container-id" class="content-container">
-        <div th:utext="${article.content}">
+    <div id="content-container-id" class="content-container-html">
+        <div id="content">
 
         </div>
     </div>
 </div>
 
 <footer th:insert="fragments/footer-fragment::footer"></footer>
+<script th:inline="javascript" th:name="on-load">
+    window.onload = function () {
+        document.getElementById("content").innerHTML = [[${article.getContent()}]];
+    }
+</script>
 </body>
 </html>
