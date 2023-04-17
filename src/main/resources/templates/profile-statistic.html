@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+
+    <link type="text/css" th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/css/footer.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/css/profile.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/css/profile-statistic.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/css/main.css}" rel="stylesheet">
+</head>
+<body>
+
+<header th:insert="fragments/header-fragment::header"/>
+
+<div class="wrapper">
+
+    <aside class="right-aside" style="float: right">
+        <a th:href="@{/profile/statistic(name='likes')}">
+            <button class="aside-button" th:href="@{/profile/statistics(name = 'views')}">
+                Likes
+            </button>
+        </a>
+        <a th:href="@{/profile/statistic(name = 'dislikes')}">
+            <button class="aside-button" th:href="@{/profile/statistics(name = 'views')}">
+                Dislikes
+            </button>
+        </a>
+        <a th:href="@{/profile/statistic(name='views')}">
+            <button class="aside-button" th:href="@{/profile/statistics(name = 'views')}">
+                Views
+            </button>
+        </a>
+        <a th:href="@{/profile/statistic(name='subscribers')}">
+            <button class="aside-button">
+                Subscribers
+            </button>
+        </a>
+    </aside>
+    <aside class="left-aside" style="float: left">
+        <a th:href="@{/profile}">
+            <button class="aside-button">
+                Profile
+            </button>
+        </a>
+
+        <a th:href="@{/profile/articles}">
+            <button class="aside-button">
+                Articles
+            </button>
+        </a>
+
+        <a th:href="@{/profile/statistic}">
+            <button class="aside-button">
+                Statistic
+            </button>
+        </a>
+
+        <a th:href="@{/logout}">
+            <button class="aside-button">
+                Log out
+            </button>
+        </a>
+
+    </aside>
+
+    <div class="content-container">
+        <div class="statistic">
+            <canvas th:if="${#strings.equals(diagramName, 'likes') || diagramName == null}" id="like-chart"
+                    style="width: 100%; height: 500px"></canvas>
+            <canvas th:if="${#strings.equals(diagramName, 'dislikes')}" id="dislike-chart"
+                    style="width: 100%; height: 500px"></canvas>
+            <canvas th:if="${#strings.equals(diagramName, 'views')}" id="views-chart"
+                    style="width: 100%; height: 500px"></canvas>
+            <canvas th:if="${#strings.equals(diagramName, 'subscribers')}" id="subscribers-chart"
+                    style="width: 100%; height: 500px"></canvas>
+        </div>
+
+        <form method="get" th:action="@{/profile/statistic(name = ${diagramName}, date = ${date})}" class="statistic-filters">
+            <input type="month" th:name="date" th:value="${date}" th:attr="name='${date}'" placeholder="Choose month">
+            <input th:value="${diagramName}"  hidden th:name="name"/>
+            <button>Filter</button>
+        </form>
+    </div>
+</div>f
+
+<footer th:insert="fragments/footer-fragment::footer"/>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script th:name="likes" th:inline="javascript">
+    const ctxLike = document.getElementById('like-chart');
+
+    new Chart(ctxLike, {
+        type: 'line',
+        data: {
+            labels: [[${dateStatistic.getMonthDays()}]],
+            datasets: [{
+                label: 'Number of Likes ' + [[${dateStatistic.getMonth}]] + '-' + [[${dateStatistic.getYear}]],
+                data: [[${statisticData}]],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+<script th:name="dislikes" th:inline="javascript">
+    const ctxDislike = document.getElementById('dislike-chart');
+
+    new Chart(ctxDislike, {
+        type: 'line',
+        data: {
+            labels: [[${dateStatistic.getMonthDays()}]],
+            datasets: [{
+                label: 'Number of Dislikes ' + [[${dateStatistic.getMonth}]] + '-' + [[${dateStatistic.getYear}]],
+                data: [[${statisticData}]],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+<script th:name="views" th:inline="javascript">
+    const ctxViews = document.getElementById('views-chart');
+
+    new Chart(ctxViews, {
+        type: 'line',
+        data: {
+            labels: [[${dateStatistic.getMonthDays()}]],
+            datasets: [{
+                label: 'Number of Views ' + [[${dateStatistic.getMonth}]] + '-' + [[${dateStatistic.getYear}]],
+                data: [[${statisticData}]],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+<script th:name="subscribers" th:inline="javascript">
+    const ctxSubscribers = document.getElementById('subscribers-chart');
+
+    new Chart(ctxSubscribers, {
+        type: 'line',
+        data: {
+            labels: [[${dateStatistic.getMonthDays()}]],
+            datasets: [{
+                label: 'Number of Subscribers ' + [[${dateStatistic.getMonth}]] + '-' + [[${dateStatistic.getYear}]],
+                data: [[${statisticData}]],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

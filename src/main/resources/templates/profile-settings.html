@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+
+    <link type="text/css" th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/css/footer.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/css/profile.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/css/main.css}" rel="stylesheet">
+</head>
+<body>
+
+<header th:insert="fragments/header-fragment::header"/>
+
+<div class="wrapper">
+
+    <aside class="left-aside" style="float: left">
+        <a th:href="@{/profile}">
+            <button class="aside-button">
+                Profile
+            </button>
+        </a>
+
+        <a th:href="@{/profile/articles}">
+            <button class="aside-button">
+                Articles
+            </button>
+        </a>
+
+        <a th:href="@{/profile/statistic}">
+            <button class="aside-button">
+                Statistic
+            </button>
+        </a>
+
+        <a th:href="@{/logout}">
+            <button class="aside-button">
+                Log out
+            </button>
+        </a>
+
+    </aside>
+
+    <div class="content-container">
+
+    </div>
+</div>
+
+<footer th:insert="fragments/footer-fragment::footer"/>
+</body>
+</html>

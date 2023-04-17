@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel</title>
+
+    <link type="text/css" th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/css/footer.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/css/articles.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/css/main.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/css/admin-panel.css}" rel="stylesheet">
+</head>
+<body>
+<header th:insert="fragments/header-fragment::header"></header>
+<div class="wrapper">
+    <aside class="left-aside" style="float: left">
+        <form class="filter-form" th:action="@{/admin-panel}">
+            <button type="submit" disabled style="display: none"></button>
+
+            <input type="text" class="title-input aside-button" th:name="title" th:value="${searchForm.title}"
+                   th:attr="name='${searchForm.title}'" placeholder="Title"/>
+
+            <select th:name="categoryName" style="width: 100%" class="filter-category aside-button">
+                <option selected th:value="${searchForm.categoryName}" th:attr="name='${searchForm.categoryName}'">
+                    Category
+                </option>
+                <option th:each="name : ${categoryNames}"
+                        th:value="${name}"
+                        th:name="${name}"
+                        th:text="${name}">
+
+                </option>
+            </select>
+
+            <input type="text" th:name="username" th:value="${searchForm.username}"
+                   th:attr="name='${searchForm.username}'" class="username-input aside-button"
+                   placeholder="Username"/>
+            <input type="date" th:name="startDate" th:value="${searchForm.startDate}"
+                   th:attr="name='${searchForm.startDate}'" class="startDate-input aside-button"
+                   placeholder="StartDate"/>
+            <input type="date" th:name="endDate" th:value="${searchForm.endDate}" th:attr="name='${searchForm.endDate}'"
+                   class="endDate-input aside-button" placeholder="EndDate"/>
+
+            <div class="aside-button">
+                <a th:href="@{/articles/saved}" class="articles-aside">
+                    <button class="custom-btn btn-1">Saved Articles</button>
+                </a>
+            </div>
+
+            <button class="button search-button" type="submit">Filter</button>
+        </form>
+    </aside>
+
+    <div class="content-container">
+        <div class="card" th:each="article: ${articleModerations}">
+            <a th:href="@{/admin-panel/moderation/{articleId}(articleId = ${article.getArticle().getArticleId()})}">
+                <div class="card-header">
+                    <img src="https://www.newsbtc.com/wp-content/uploads/2020/06/mesut-kaya-LcCdl__-kO0-unsplash-scaled.jpg"
+                         alt="ballons"/>
+                </div>
+
+                <div class="card-body">
+                    <span class="tag tag-purple" th:text="${article.getArticle().getCategory().getName()}">Popular</span>
+                    <h4 th:text="${article.getArticle().getTitle()}">
+
+                    </h4>
+                    <p th:text="${article.getArticle().getDescription()}">
+
+                    </p>
+                    <div class="user">
+                        <img src="https://lh3.googleusercontent.com/ogw/ADGmqu8sn9zF15pW59JIYiLgx3PQ3EyZLFp5Zqao906l=s32-c-mo"
+                             alt="user"/>
+                        <div class="user-info">
+                            <h5 th:text="${article.getArticle().getUser().getUsername()}"></h5>
+
+                            <small th:text="${article.getArticle().getCreatedAt()}"></small>
+
+                        </div>
+                    </div>
+
+                    <hr class="bottom-hr"/>
+                    <div class="footer-card-menu">
+                        <a th:text="${article.getStatus()}"></a>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <ul th:if="${totalPages} > 1" class="pagination-menu">
+            <li id="prev-li">
+                <a th:href="@{/articles(categoryName = ${categoryName})}">
+                    <button id="prev-button">Prev</button>
+                </a>
+            </li>
+
+            <li><a th:text="${currentPage} + 1" href="#"></a></li>
+
+            <li id="next-li">
+                <a th:href="@{/articles(categoryName = ${categoryName})}">
+                    <button id="next-button">Next</button>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <aside style="float: right">
+        <a th:href="@{/admin-panel/moderation}">
+            <button class="moderation-button">
+                Moderation
+            </button>
+        </a>
+    </aside>
+
+    <script th:inline="javascript">
+        const prev = document.getElementById("prev-button");
+
+        if ([[${currentPage}]] + 1 < 2) {
+            prev.disabled = true;
+        }
+
+        const next = document.getElementById("next-button");
+
+        if ([[${currentPage}]] + 1 >= [[${totalPages}]]) {
+            next.disabled = true;
+        }
+    </script>
+    <script>
+
+        var check_status = false;
+        var like_cnt = $("#like-cnt");
+        var like_parent = $(".like-container");
+
+        var burst = new mojs.Burst({
+            parent: like_parent,
+            radius: {20: 60},
+            count: 15,
+            angle: {0: 30},
+            children: {
+                delay: 250,
+                duration: 700,
+                radius: {10: 0},
+                fill: ['#ddca7e'],
+                easing: mojs.easing.bezier(.08, .69, .39, .97)
+            }
+        });
+
+        $("#like-cnt").click(function () {
+            var t1 = new TimelineLite();
+            var t2 = new TimelineLite();
+            if (!check_status) {
+                t1.set(like_cnt, {scale: 0});
+                t1.set('.like-btn', {scale: 0});
+                t1.to(like_cnt, 0.6, {scale: 1, background: '#ddca7e', ease: Expo.easeOut});
+                t2.to('.like-btn', 0.65, {scale: 1, ease: Elastic.easeOut.config(1, 0.3)}, '+=0.2');
+                check_status = true;
+                burst.replay();
+            } else {
+                t1.to(like_cnt, 1, {scale: 1})
+                    .to(like_cnt, 1, {scale: 1, background: 'rgba(255,255,255,0.3)', ease: Power4.easeOut});
+                t1.timeScale(7);
+                check_status = false;
+            }
+
+        })
+    </script>
+    <script th:inline="javascript">
+        async function doSave(articleId) {
+            const response = await doSaveRequest([[${username}]], articleId);
+        }
+
+        async function doSaveRequest(username, articleId) {
+            const response = await
+                fetch("http://localhost:8084/api/articles/managing/save/" + articleId + "/" + username, {
+                    method: "POST"
+                })
+
+            return response.json();
+        }
+    </script>
+
+</div>
+<footer th:insert="fragments/footer-fragment::footer"></footer>
+</body>
+</html>

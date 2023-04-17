@@ -1,0 +1,13 @@
+.statistic{
+    height: 100%;
+    width: 100%;
+
+    border: 1px solid #cccccc;
+    border-radius: 2%;
+}
+
+.statistic-filters{
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+}

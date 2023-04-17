@@ -1,0 +1,17 @@
+.profile-page{
+    display: flex;
+    flex-wrap: wrap;
+    width: 600px;
+    height: 600px;
+    background-color: white;
+    justify-content: center;
+    justify-items: center;
+    margin: auto;
+}
+
+.edit-block{
+    display: flex;
+    width: 600px;
+    height: 40px;
+    justify-content: center;
+}

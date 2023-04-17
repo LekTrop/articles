@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:fragment="header-head">
+    <link type="text/css" th:href="@{/css/header.css}" rel="stylesheet"/>
+</head>
+
+<body>
+<header class="header-menu" th:fragment="header">
+
+    <div class="logo">
+
+    </div>
+
+    <div class="header-ul">
+        <ul>
+            <li><a th:href="@{/articles}">Articles</a></li>
+            <li><a sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin-panel}">Admin Panel</a></li>
+            <li><a sec:authorize="!isAuthenticated()" th:href="@{/login}">Login</a></li>
+            <li><a sec:authorize="!isAuthenticated()" th:href="@{/registration}">Registration</a></li>
+        </ul>
+    </div>
+
+    <div sec:authorize="isAuthenticated()" class="profile-menu">
+        <a th:href="@{/profile}" class="profile-icon">
+
+        </a>
+    </div>
+</header>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+
+    <link type="text/css" th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/css/footer.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/css/articles.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/css/profile.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/css/main.css}" rel="stylesheet">
+</head>
+</head>
+<body>
+
+<header th:insert="fragments/header-fragment::header"/>
+
+<div class="wrapper">
+
+    <aside class="left-aside" style="float: left">
+        <a th:href="@{/profile}">
+            <button class="aside-button">
+                Profile
+            </button>
+        </a>
+
+        <a th:href="@{/profile/articles}">
+            <button class="aside-button">
+                Articles
+            </button>
+        </a>
+
+        <a th:href="@{/profile/statistic}">
+            <button class="aside-button">
+                Statistic
+            </button>
+        </a>
+
+        <a th:href="@{/logout}">
+            <button class="aside-button">
+                Log out
+            </button>
+        </a>
+
+    </aside>
+
+    <aside class="right-aside" style="float: right">
+        <form class="filter-form" th:action="@{/profile/articles}">
+            <button type="submit" disabled style="display: none"></button>
+
+            <input type="text" class="title-input aside-button" th:name="title" th:value="${searchForm.title}"
+                   th:attr="name='${searchForm.title}'" placeholder="Title"/>
+
+            <select th:name="categoryName" style="width: 100%" class="filter-category aside-button">
+                <option selected th:value="${searchForm.categoryName}" th:attr="name='${searchForm.categoryName}'">
+                    Category
+                </option>
+                <option th:each="name : ${categoryNames}"
+                        th:value="${name}"
+                        th:name="${name}"
+                        th:text="${name}">
+
+                </option>
+            </select>
+
+            <input type="text" th:name="username" th:value="${searchForm.username}"
+                   th:attr="name='${searchForm.username}'" class="username-input aside-button" placeholder="Username"/>
+            <input type="date" th:name="startDate" th:value="${searchForm.startDate}"
+                   th:attr="name='${searchForm.startDate}'" class="startDate-input aside-button"
+                   placeholder="StartDate"/>
+            <input type="date" th:name="endDate" th:value="${searchForm.endDate}" th:attr="name='${searchForm.endDate}'"
+                   class="endDate-input aside-button" placeholder="EndDate"/>
+
+            <div class="aside-button">
+                <a th:href="@{/articles/saved}" class="articles-aside">
+                    <button class="custom-btn btn-1">Saved Articles</button>
+                </a>
+            </div>
+
+            <button class="button search-button" type="submit">Filter</button>
+        </form>
+    </aside>
+
+    <div class="content-container">
+        <div class="user-article-helper-menu">
+            <div class="add-articles">
+                <a th:href="@{/profile/articles/creation}">
+                    <button class="add-article-button">Add Article</button>
+                </a>
+            </div>
+
+            <div class="saved-articles">
+                <a th:href="@{/profile/articles/saved}">
+                    <button class="saved-button">Saved Articles</button>
+                </a>
+            </div>
+
+            <div class="liked-articles">
+                <a th:href="@{/profile/articles/liked}">
+                    <button class="liked-button">Liked Articles</button>
+                </a>
+            </div>
+        </div>
+
+        <div class="card" th:each="article: ${articles}">
+            <a th:href="@{/profile/articles/{articleId}(articleId = ${article.getArticleId()})}">
+                <div class="card-header">
+                    <img src="https://www.newsbtc.com/wp-content/uploads/2020/06/mesut-kaya-LcCdl__-kO0-unsplash-scaled.jpg"
+                         alt="ballons"/>
+                </div>
+
+                <div class="card-body">
+                    <span class="tag tag-purple">Popular</span>
+                    <h4 th:text="${article.getTitle()}">
+
+                    </h4>
+                    <p th:text="${article.getDescription()}">
+
+                    </p>
+                    <div class="user">
+                        <img src="https://lh3.googleusercontent.com/ogw/ADGmqu8sn9zF15pW59JIYiLgx3PQ3EyZLFp5Zqao906l=s32-c-mo"
+                             alt="user"/>
+                        <div class="user-info">
+                            <h5 th:text="${article.getUser().getUsername()}"></h5>
+
+                            <small th:text="${article.getCreatedAt()}"></small>
+
+                        </div>
+                    </div>
+                </div>
+                <hr class="bottom-hr"/>
+                <div class="footer-card-menu">
+                    <a th:text="${article.getStatus()}"></a>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<footer th:insert="fragments/footer-fragment::footer"/>
+</body>
+</html>

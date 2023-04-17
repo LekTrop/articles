@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+
+    <link type="text/css" th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/css/footer.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/css/author-profile.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/css/main.css}" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script th:src="@{/js/jquery-3.6.3.min.js}"></script>
+</head>
+<body>
+
+<header th:insert="fragments/header-fragment::header"/>
+
+<div class="wrapper">
+    <div class="content-container">
+        <button class="subscribe" type="button" onclick="subscribe()">Subscribe</button>
+    </div>
+</div>
+
+<footer th:insert="fragments/footer-fragment::footer"/>
+
+<script th:inline="javascript">
+    async function subscribe() {
+        const subscriberUsername = [[${authorUsername}]];
+        const userUsername = [[${userUsername}]]
+        const response = await doPostRequest(subscriberUsername, userUsername);
+
+        if(response === true){
+
+        }else{
+
+        }
+    }
+
+    async function doPostRequest(subscriberUsername, userUsername) {
+        const response = await fetch('http://localhost:8084/api/v1/subscribers/subscribe/' + subscriberUsername + '/' + userUsername, {
+            method: "POST"
+        });
+
+        return await response.json();
+    }
+</script>
+</body>
+</html>

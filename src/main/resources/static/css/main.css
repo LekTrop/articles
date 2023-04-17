@@ -1,0 +1,11 @@
+body{
+    background-color: #EEEEEE;
+}
+
+.content-container-html{
+    width: 1000px;
+    height: auto;
+    min-height: 600px;
+    background-color: white;
+    margin: auto;
+}
